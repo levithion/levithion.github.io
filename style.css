@@ -538,6 +538,9 @@ a:hover {
 
 .project-links {
     margin-top: auto;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .project-links a {
