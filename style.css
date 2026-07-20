@@ -854,6 +854,12 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .glass-panel {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(22, 27, 34, 0.95);
+    }
+
     .timeline::after {
         left: 15px;
     }
