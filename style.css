@@ -294,6 +294,7 @@ a:hover {
 
 .hero-cta {
     display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
 }
@@ -444,7 +445,7 @@ a:hover {
 /* Skills Section */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     gap: 2rem;
 }
 
@@ -489,7 +490,7 @@ a:hover {
 /* Projects Section */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 2rem;
 }
 
@@ -653,6 +654,17 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .hero-cta {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+    
+    .hero-cta .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
     .nav-links {
         position: absolute;
         top: 100%;
@@ -853,5 +865,36 @@ a:hover {
     
     .timeline-item::after {
         left: -23px;
+    }
+}
+
+@media (max-width: 480px) {
+    .name {
+        font-size: 2.5rem;
+    }
+    
+    .typing-container {
+        font-size: 1.1rem;
+    }
+    
+    .hero-desc {
+        font-size: 0.95rem;
+    }
+    
+    .section {
+        padding: 3rem 1.2rem;
+    }
+    
+    .nav-content {
+        padding: 0 1.2rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
     }
 }
