@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Collaborative Filtering Movie Recommender | Shshank Singh</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
+        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
+        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
+        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
+        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="article-header">
+            <h1 class="article-title">Neural Collaborative Filtering Movie Recommender</h1>
+            <p style="color: var(--text-color); opacity: 0.8; font-size: 1.1rem;">May 2025 - Jul 2025</p>
+        </div>
+        <div class="article-content glass-panel">
+            <h2>Introduction</h2>
+            <p>Hey there! Let me walk you through one of my favorite projects: a Neural Collaborative Filtering (NCF) Movie Recommender. Recommendations silently rule our digital lives, from the songs we stream to the products we buy. Personally speaking, I wanted to understand the magic behind these systems and build one myself from scratch. So, I set out to create a robust, deep learning-based engine that recommends movies you're actually going to love.</p>
+
+            <h2>The Problem I Wanted to Solve</h2>
+            <p>If you look at traditional recommendation systems, many rely on a technique called Matrix Factorization. It basically maps users and items to a shared latent space. While it's mathematically elegant, it has a glaring limitation: it assumes all relationships are strictly linear. But human taste isn't linear! Why someone likes both "The Matrix" and "Pride and Prejudice" might involve complex, subtle, and non-linear patterns. I needed an architecture that could capture these deep, hidden intricacies that standard algorithms simply miss.</p>
+
+            <h2>How It Works (Under the Hood)</h2>
+            <p>To solve this, I designed a hybrid model known as **NeuMF** (Neural Matrix Factorization), blending two powerful approaches:</p>
+            <ul>
+                <li><strong>Generalized Matrix Factorization (GMF):</strong> This component handles the linear interactions, serving as a strong, reliable baseline.</li>
+                <li><strong>Multi-Layer Perceptron (MLP):</strong> This deep neural network structure takes user and item embeddings and learns the complex, non-linear interactions between them.</li>
+            </ul>
+            <p>By fusing these together in <strong>PyTorch</strong>, the model achieved a far more nuanced understanding of user preferences. But I didn't want this to just sit in a Jupyter notebook. I engineered a <strong>FastAPI</strong> backend to serve live predictions and wrapped it in an interactive <strong>Streamlit</strong> and <strong>Plotly</strong> dashboard. This meant users could interact with the model in real time, tweaking inputs and watching the recommendations adapt instantly.</p>
+
+            <h2>Challenges & Learnings</h2>
+            <p>The hardest part of this project was balancing the GMF and MLP branches during training. They converge at different rates, and fine-tuning the hyperparameters (like embedding sizes and learning rates) required a lot of methodical experimentation. Another significant challenge was ensuring the inference latency remained low when deployed, so the real-time Streamlit dashboard felt snappy and responsive.</p>
+
+            <h2>Final Thoughts</h2>
+            <p>This project was a massive leap for me. It bridged the gap between raw AI research and a living, breathing software product. Seeing the model successfully suggest a movie that perfectly matched a complex user profile was incredibly rewarding, and it proved to me the power of deep learning in personalization.</p>
+            
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

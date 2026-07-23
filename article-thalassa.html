@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thalassa - AI Mental Health Chatbot | Shshank Singh</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
+        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
+        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
+        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
+        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="article-header">
+            <h1 class="article-title">Thalassa - AI Mental Health Chatbot</h1>
+            <p style="color: var(--text-color); opacity: 0.8; font-size: 1.1rem;">Sep 2024 - Oct 2024</p>
+        </div>
+        <div class="article-content glass-panel">
+            <h2>Introduction</h2>
+            <p>Welcome! Let me tell you about Thalassa, an AI-driven mental health platform. Personally speaking, I believe technology should foster empathy, not just efficiency. Access to therapy and mental health support can be restricted by cost, time, and stigma. I wanted to build a persistent, safe, and emotionally intelligent digital companion that people could turn to whenever they felt overwhelmed.</p>
+
+            <h2>The Problem I Wanted to Solve</h2>
+            <p>Most standard chatbots are transactional—you ask a question, you get an answer, and the bot instantly forgets you exist. For mental health support, that amnesia is a dealbreaker. To be effective, a companion needs <em>memory</em>. It needs to remember what you talked about last week, track your mood trends, and provide a continuous, private space for reflection. The challenge was combining the conversational power of modern LLMs with robust state management and privacy infrastructure.</p>
+
+            <h2>How It Works (Under the Hood)</h2>
+            <p>Thalassa is a full-stack application built around human-centric design:</p>
+            <ul>
+                <li><strong>The Intelligence:</strong> I utilized the Groq API to power the application with Meta's LLaMA 3.1. I meticulously engineered the system prompts to ensure the AI maintained a supportive, non-judgmental, and appropriately boundary-aware persona.</li>
+                <li><strong>The Backend Engine:</strong> I architected a Flask and SQLite backend. This allowed me to implement persistent conversational memory, meaning Thalassa remembers past interactions and builds on them over time.</li>
+                <li><strong>Security & Tracking:</strong> Because mental health data is deeply personal, I integrated strict JWT-secured authentication. I also built a private journaling system and a mood-tracking analytics dashboard using Chart.js, allowing users to visualize their emotional state over weeks and months.</li>
+            </ul>
+
+            <h2>Challenges & Learnings</h2>
+            <p>The most delicate part of this project was prompt engineering and conversational flow. An LLM can easily generate generic advice, but tuning it to sound genuinely empathetic and helpful—without trying to practice unlicensed medicine—took significant iteration. From a technical standpoint, managing the context window limit of the LLM while retaining long-term memory required implementing clever summarization and retrieval techniques in the backend.</p>
+
+            <h2>Final Thoughts</h2>
+            <p>Thalassa was more than just a coding exercise; it was an exploration into human-computer interaction. Building a tool designed to bring comfort and insight to users taught me how to handle sensitive data responsibly and highlighted the immense potential for AI in the wellness space.</p>
+            
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>

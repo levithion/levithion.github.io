@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query-Based Book Recommender | Shshank Singh</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
+        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
+        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
+        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
+        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="article-header">
+            <h1 class="article-title">Query-Based Book Recommendation System</h1>
+        </div>
+        <div class="article-content glass-panel">
+            <h2>Introduction</h2>
+            <p>Welcome! I want to share the story behind my Query-Based Book Recommendation System. Personally speaking, I am an avid reader, but I constantly found myself struggling to find a book based on a specific "vibe" or abstract concept. I wanted to build a semantic search platform that allows people to describe what they want to read in plain English, and instantly get the perfect recommendation.</p>
+
+            <h2>The Problem I Wanted to Solve</h2>
+            <p>Traditional keyword-based search is fundamentally broken for creative discovery. If you search a library database for "a story about isolation in deep space," standard search engines look for those exact keywords. But what if the best matching book's blurb says "a lone astronaut adrift in the cosmos"? The meaning is identical, but the words are entirely different. I needed a system that understands <em>semantics</em> (meaning) rather than just syntax (spelling).</p>
+
+            <h2>How It Works (Under the Hood)</h2>
+            <p>To bridge this semantic gap, I leveraged <strong>Sentence Transformers</strong>, specifically the <code>all-MiniLM-L6-v2</code> model. Here is the step-by-step flow:</p>
+            <ul>
+                <li><strong>Vectorization:</strong> I pre-computed high-dimensional vector embeddings for the summaries and metadata of over 7,000 books. In this mathematical space, books with similar themes are located closer together.</li>
+                <li><strong>Query Processing:</strong> When a user types a natural-language query, the system converts their sentence into the exact same vector space.</li>
+                <li><strong>Retrieval:</strong> Using <strong>Cosine Similarity</strong>, the system calculates the angle between the user's query vector and all the book vectors. The closest vectors represent the best semantic matches.</li>
+            </ul>
+            <p>I wrapped all of this logic into a sleek, interactive frontend using <strong>Streamlit</strong> and deployed it on the Streamlit Community Cloud so anyone could access it from their browser.</p>
+
+            <h2>Challenges & Learnings</h2>
+            <p>Working with vector embeddings at scale introduces interesting performance challenges. Calculating cosine similarity across 7,000+ high-dimensional vectors on the fly can become a bottleneck. I spent a significant amount of time optimizing the tensor operations in PyTorch and caching the embeddings to ensure the search felt instantaneous to the user. It taught me a lot about memory management and computational efficiency in Python.</p>
+
+            <h2>Final Thoughts</h2>
+            <p>This project successfully proved to me how accessible and powerful modern NLP tools have become. Transforming a vague feeling into a concrete book recommendation feels a bit like magic, and it's a testament to the capabilities of retrieval-augmented generation (RAG) concepts when applied to search.</p>
+            
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>

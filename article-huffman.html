@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context-Aware Huffman Compressor | Shshank Singh</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
+        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
+        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
+        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
+        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="article-header">
+            <h1 class="article-title">Context-Aware Huffman Compressor</h1>
+            <p style="color: var(--text-color); opacity: 0.8; font-size: 1.1rem;">Aug 2025 - Dec 2025</p>
+        </div>
+        <div class="article-content glass-panel">
+            <h2>Introduction</h2>
+            <p>Welcome! Let's take a deep dive into computer science fundamentals. Personally speaking, I have a profound appreciation for algorithmic efficiency. While deep learning is flashy, the foundational algorithms that make computing possible are equally fascinating. I set out to build a Context-Aware Huffman Compressor to push the boundaries of standard text compression algorithms.</p>
+
+            <h2>The Problem I Wanted to Solve</h2>
+            <p>Standard Huffman coding is brilliant, but it's blind. It calculates the global frequency of characters in a document and assigns shorter binary codes to the most frequent characters. However, human language is highly contextual. If you see the letter "q", there is an incredibly high probability the next letter is "u". Standard Huffman ignores this context entirely, assigning the same code to "u" whether it follows "q" or "x". I realized that by making the algorithm aware of context, we could squeeze out significantly higher compression ratios.</p>
+
+            <h2>How It Works (Under the Hood)</h2>
+            <p>To achieve this, I fundamentally redesigned how the encoding trees are generated:</p>
+            <ul>
+                <li><strong>N-Order Markov Model:</strong> Instead of one global frequency table, the system uses an N-order Markov model to look at the preceding characters (the context) to predict the next character.</li>
+                <li><strong>Dynamic Huffman Trees:</strong> The algorithm generates multiple, context-specific Huffman trees. If the preceding character was "q", the system uses a specific tree where "u" is at the very top (meaning it has the shortest possible binary code).</li>
+                <li><strong>Benchmarking Tools:</strong> I built a comprehensive CLI tool and a Streamlit UI to benchmark the entropy. The system dynamically evaluates file sizes, demonstrating how close we can get to the theoretical limits of conditional entropy.</li>
+            </ul>
+
+            <h2>Challenges & Learnings</h2>
+            <p>The primary challenge was managing the state space. As you increase the Markov order (looking at 2, 3, or 4 preceding characters instead of just 1), the number of required Huffman trees explodes exponentially. This causes severe memory overhead. I had to implement pruning strategies and highly optimized data structures in Python to ensure the compressor ran fast without consuming all available RAM. It was a rigorous exercise in algorithmic complexity and optimization.</p>
+
+            <h2>Final Thoughts</h2>
+            <p>This project was deeply satisfying. By injecting probabilistic context into a classic algorithm, I managed to improve compression ratios by 15-20% on context-heavy text, reducing the average size by 1.2 bits per token. It stands as a testament to the fact that returning to first principles and questioning standard assumptions can yield incredible results.</p>
+            
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>

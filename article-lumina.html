@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Multimodal Search Engine | Shshank Singh</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
+        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
+        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
+        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
+        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="article-header">
+            <h1 class="article-title">Lumina Distributed Multimodal Semantic Search Engine</h1>
+            <p style="color: var(--text-color); opacity: 0.8; font-size: 1.1rem;">Feb 2026 - Mar 2026</p>
+        </div>
+        <div class="article-content glass-panel">
+            <h2>Introduction</h2>
+            <p>Hey there! I want to talk to you about Lumina, my distributed multimodal semantic search engine. Personally speaking, the boundary between text and images has always fascinated me. We process the world visually, but we communicate primarily through language. I built Lumina to bridge that gap—allowing users to search through massive datasets of images using natural, descriptive language.</p>
+
+            <h2>The Problem I Wanted to Solve</h2>
+            <p>Imagine you have a library of 8,000+ photos. If you want to find "a dog running on the beach at sunset," traditional image search requires that someone meticulously tagged that photo with those exact words beforehand. This manual tagging is unscalable and highly subjective. I wanted a system that could "look" at the images, understand their content, and instantly match them to text queries without relying on pre-existing metadata.</p>
+
+            <h2>How It Works (Under the Hood)</h2>
+            <p>Lumina relies on some incredible deep learning architecture:</p>
+            <ul>
+                <li><strong>CLIP (Contrastive Language-Image Pre-Training):</strong> I utilized OpenAI's CLIP-VIT-B-32 model. CLIP is uniquely trained to project both text and images into the <em>exact same</em> mathematical vector space. This means the vector for the text "a cat" is located right next to the vector representing a picture of a cat.</li>
+                <li><strong>Qdrant Vector Database:</strong> To handle the 8,000+ image vectors, I deployed Qdrant. It's incredibly fast at performing nearest-neighbor searches in high-dimensional spaces.</li>
+                <li><strong>FastAPI & MPS Acceleration:</strong> I built the ingestion backend using FastAPI. To speed up the heavy lifting of generating embeddings, I engineered the system to utilize Apple's MPS (Metal Performance Shaders) for hardware acceleration.</li>
+            </ul>
+            <p>When you type a query, the FastAPI backend uses CLIP to turn your text into a vector, asks Qdrant for the closest image vectors, and serves the results back to a streamlined Streamlit dashboard.</p>
+
+            <h2>Challenges & Learnings</h2>
+            <p>Scaling up to 8,000+ images isn't just a matter of running a loop. My initial ingestion scripts kept timing out or crashing due to memory limits. I had to learn how to implement robust batch upserts, carefully chunking the data and monitoring the API health during the massive upload process. Getting the MPS acceleration properly configured for PyTorch on Mac architecture was also a steep, but very rewarding, learning curve.</p>
+
+            <h2>Final Thoughts</h2>
+            <p>Lumina is a project I am incredibly proud of. It shifted my perspective from building standalone ML scripts to architecting scalable, distributed systems. Being able to type a complex sentence and instantly watch the system pull up the exact image I was imagining still feels like science fiction.</p>
+            
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>

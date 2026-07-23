@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Drowsiness Detection System | Shshank Singh</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
+        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
+        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
+        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
+        .article-content p { margin-bottom: 1.5rem; }
+        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
+        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="article-header">
+            <h1 class="article-title">Driver Drowsiness Detection System</h1>
+            <p style="color: var(--text-color); opacity: 0.8; font-size: 1.1rem;">Jan 2025 - Apr 2025</p>
+        </div>
+        <div class="article-content glass-panel">
+            <h2>Introduction</h2>
+            <p>Hello! I'd like to share the details of a computer vision project with real-world safety implications: the Driver Drowsiness Detection System. Personally speaking, I wanted to build AI that doesn't just analyze data, but actively interacts with the physical world to prevent harm. Driver fatigue is a massive, often fatal issue on roads globally, and I saw an opportunity to utilize edge-deployed deep learning as a preventative measure.</p>
+
+            <h2>The Problem I Wanted to Solve</h2>
+            <p>The danger of driving while exhausted usually manifests in "micro-sleeps"—brief, involuntary moments of unconsciousness. The problem with detecting these is two-fold: First, the detection must be incredibly fast (real-time). A delay of even a few seconds can be fatal. Second, the system must be robust. A car's cabin environment changes drastically: glaring sunlight, pitch-black night, shadows, and varying angles. I needed a model that was both highly accurate under diverse conditions and extremely lightweight.</p>
+
+            <h2>How It Works (Under the Hood)</h2>
+            <p>To tackle this, I engineered a real-time detection pipeline based on Convolutional Neural Networks (CNNs):</p>
+            <ul>
+                <li><strong>MobileNetV2 Backbone:</strong> I chose MobileNetV2 because its architecture is specifically designed to maximize accuracy while minimizing computational cost, making it perfect for edge devices.</li>
+                <li><strong>Computer Vision Pipeline:</strong> Using OpenCV, the system continuously captures frames from a camera, isolates the facial region, and specifically tracks the aspect ratio of the driver's eyes.</li>
+                <li><strong>Real-Time Inference:</strong> The CNN evaluates the sequence of frames to determine if the eye closure pattern indicates normal blinking or a dangerous micro-sleep.</li>
+            </ul>
+            <p>The final system achieved an impressive 94% precision and 92% recall across various testing datasets.</p>
+
+            <h2>Challenges & Learnings</h2>
+            <p>The primary battle was the trade-off between accuracy and latency. High-accuracy models are usually heavy and slow. I spent weeks tuning the MobileNetV2 architecture, implementing quantization, and optimizing the OpenCV processing loop. The goal was to run this on resource-constrained hardware (like a Raspberry Pi inside a dashboard). Eventually, I managed to push the processing latency to under 50ms, allowing a smooth 20+ Frames Per Second (FPS) detection rate without sacrificing reliability.</p>
+
+            <h2>Final Thoughts</h2>
+            <p>Building this system solidified my understanding of deploying ML models outside of cloud environments. It's one thing to train a model in a Google Colab notebook; it's an entirely different challenge to make it run flawlessly in real-time, on low-power hardware, with human safety on the line.</p>
+            
+            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
