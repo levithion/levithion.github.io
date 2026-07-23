@@ -1,115 +1,57 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Typing Effect
-    const typedTextSpan = document.querySelector(".typed-text");
-    const textArray = ["Machine Learning Engineer", "Software Developer", "Problem Solver"];
-    const typingDelay = 100;
-    const erasingDelay = 50;
-    const newTextDelay = 2000;
-    let textArrayIndex = 0;
-    let charIndex = 0;
+document.addEventListener("DOMContentLoaded", () => {
+    const header = document.querySelector(".site-header");
+    const progress = document.querySelector(".progress span");
+    const menuButton = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("#site-nav");
+    const navLinks = nav.querySelectorAll("a");
+    const reveals = document.querySelectorAll(".reveal");
 
-    function type() {
-        if (charIndex < textArray[textArrayIndex].length) {
-            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(type, typingDelay);
-        } else {
-            setTimeout(erase, newTextDelay);
-        }
-    }
+    const updateScrollState = () => {
+        const scrollTop = window.scrollY;
+        const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+        const percentage = scrollRange > 0 ? (scrollTop / scrollRange) * 100 : 0;
 
-    function erase() {
-        if (charIndex > 0) {
-            typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, erasingDelay);
-        } else {
-            textArrayIndex++;
-            if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-            setTimeout(type, typingDelay + 1100);
-        }
-    }
-
-    if (textArray.length) setTimeout(type, newTextDelay + 250);
-
-    // Navbar Scroll Effect
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Active Link Highlighting
-    const sections = document.querySelectorAll('section, header');
-    const navLinks = document.querySelectorAll('.nav-links a');
-
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (current && link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
-            }
-        });
-    });
-
-    // Reveal Elements on Scroll
-    const revealElements = document.querySelectorAll('.section');
-    
-    const revealOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
+        header.classList.toggle("scrolled", scrollTop > 24);
+        progress.style.width = `${percentage}%`;
     };
 
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                return;
-            } else {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
+    const setMenu = (open) => {
+        menuButton.setAttribute("aria-expanded", String(open));
+        nav.classList.toggle("open", open);
+        document.body.classList.toggle("menu-open", open);
+        menuButton.querySelector(".menu-label").textContent = open ? "Close" : "Menu";
+    };
+
+    menuButton.addEventListener("click", () => {
+        setMenu(menuButton.getAttribute("aria-expanded") !== "true");
+    });
+
+    navLinks.forEach((link) => {
+        link.addEventListener("click", () => setMenu(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setMenu(false);
+    });
+
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries, revealObserver) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add("is-visible");
+                revealObserver.unobserve(entry.target);
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: "0px 0px -8% 0px"
         });
-    }, revealOptions);
 
-    revealElements.forEach(el => {
-        revealOnScroll.observe(el);
-    });
+        reveals.forEach((element) => observer.observe(element));
+    } else {
+        reveals.forEach((element) => element.classList.add("is-visible"));
+    }
 
-    // Mobile Menu Toggle
-    const menuBtn = document.querySelector('.menu-btn');
-    const navLinksContainer = document.querySelector('.nav-links');
-
-    menuBtn.addEventListener('click', () => {
-        navLinksContainer.classList.toggle('active');
-        const icon = menuBtn.querySelector('i');
-        if (navLinksContainer.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-xmark');
-        } else {
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-        }
-    });
-
-    // Close mobile menu on link click
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navLinksContainer.classList.remove('active');
-            const icon = menuBtn.querySelector('i');
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-        });
-    });
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    updateScrollState();
 });

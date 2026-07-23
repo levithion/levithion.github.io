@@ -3,347 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shshank Singh | ML Engineer & Software Developer</title>
-    <meta name="description" content="Portfolio of Shshank Singh, a software developer specializing in Machine Learning, NLP, and Computer Vision.">
-    
-    <!-- Google Fonts -->
+    <meta name="theme-color" content="#090909">
+    <title>Shshank Singh — ML Engineer &amp; Systems Builder</title>
+    <meta name="description" content="Shshank Singh builds intelligent search, recommendation, and computer-vision systems. Explore selected machine-learning work and engineering case studies.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="background-animation">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="film-grain" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><span></span></div>
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="#" class="logo">Shshank <span>S.</span></a>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="https://drive.google.com/file/d/1hB6PD66EAQ8dL_WPQ_tKQCWP3nqLCSfY/view?usp=sharing" target="_blank">Resume</a></li>
-            </ul>
-            <div class="menu-btn"><i class="fas fa-bars"></i></div>
-        </div>
-    </nav>
+    <header class="site-header">
+        <a class="wordmark" href="#top" aria-label="Shshank Singh, home">
+            <span>SS</span>
+            <span class="wordmark-name">Shshank Singh</span>
+        </a>
 
-    <header class="hero" id="home">
-        <div class="hero-content">
-            <h2 class="greeting">Hi there, I'm</h2>
-            <h1 class="name">Shshank Singh</h1>
-            <div class="typing-container">
-                <span class="role-prefix">I am a </span><span class="typed-text"></span><span class="cursor">&nbsp;</span>
-            </div>
-            <p class="hero-desc">I design intelligent systems — from recommender engines that understand semantic meaning to real-time safety applications using deep learning.</p>
-            <div class="hero-cta">
-                <a href="#projects" class="btn primary-btn">View My Work</a>
-                <a href="https://drive.google.com/file/d/1hB6PD66EAQ8dL_WPQ_tKQCWP3nqLCSfY/view?usp=sharing" target="_blank" class="btn secondary-btn"><i class="fas fa-file-pdf"></i> Resume</a>
-                <a href="https://github.com/levithion" target="_blank" class="btn secondary-btn"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-            
-            <div class="social-links-hero">
-                <a href="https://www.linkedin.com/in/shshank-singh-levithion/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://codolio.com/profile/7kai" target="_blank" title="Codolio"><i class="fas fa-laptop-code"></i></a>
-            </div>
-        </div>
-        <div class="hero-image">
-            <div class="glass-card terminal-card">
-                <div class="terminal-header">
-                    <div class="circle red"></div>
-                    <div class="circle yellow"></div>
-                    <div class="circle green"></div>
-                    <span class="terminal-title">shshank_profile.py</span>
-                </div>
-                <div class="terminal-body">
-<pre><code class="language-python"><span class="keyword">class</span> <span class="class-name">Shshank</span>:
-    <span class="keyword">def</span> <span class="method">__init__</span>(<span class="keyword">self</span>):
-        <span class="keyword">self</span>.name      = <span class="string">"Shshank Singh"</span>
-        <span class="keyword">self</span>.role      = <span class="string">"ML Engineer"</span>
-        <span class="keyword">self</span>.interests = [<span class="string">"Deep Learning"</span>, 
-                          <span class="string">"NLP"</span>, 
-                          <span class="string">"Computer Vision"</span>]
-        
-    <span class="keyword">def</span> <span class="method">say_hi</span>(<span class="keyword">self</span>):
-        <span class="built-in">print</span>(<span class="string">"Let's build something remarkable!"</span>)
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+            <span class="menu-label">Menu</span>
+            <span class="menu-mark" aria-hidden="true"></span>
+        </button>
 
-me = Shshank()
-me.say_hi()
-<span class="cursor-blink">_</span></code></pre>
-                </div>
-            </div>
-        </div>
+        <nav id="site-nav" aria-label="Primary navigation">
+            <a href="#work"><span>01</span> Work</a>
+            <a href="#profile"><span>02</span> Profile</a>
+            <a href="#capabilities"><span>03</span> Capabilities</a>
+            <a href="#contact"><span>04</span> Contact</a>
+        </nav>
     </header>
 
-    <section id="about" class="section">
-        <h2 class="section-title">About <span>Me</span></h2>
-        <div class="about-container">
-            <div class="about-text glass-panel">
-                <p>I'm an AI/ML-focused software engineer from India with hands-on experience building LLM-integrated applications, retrieval-augmented systems, and full-stack ML pipelines in Python.</p>
-                <p>I have practical experience with vector databases, embedding models, FastAPI backends, and applied use of Claude-based agentic tooling for AI-assisted development. I'm also deeply invested in problem-solving, consistently sharpening my algorithmic thinking. My approach is fast-iterating and experiment-driven, focusing on turning research into robust, live products.</p>
+    <main id="main">
+        <section class="hero" id="top" aria-labelledby="hero-title">
+            <div class="hero-meta mono">
+                <span>Portfolio / 2026</span>
+                <span>25.3176° N / 82.9739° E</span>
             </div>
-        </div>
-    </section>
 
-    <section id="experience" class="section">
-        <h2 class="section-title">My <span>Experience</span></h2>
-        <div class="timeline">
-            <div class="timeline-item glass-panel">
-                <div class="timeline-date">May 2025 - Jul 2025</div>
-                <div class="timeline-content">
-                    <h3>Machine Learning Intern</h3>
-                    <h4>Indian Institute of Technology (BHU), Varanasi</h4>
-                    <p class="timeline-subtitle">Neural Collaborative Filtering Based Movie Recommender</p>
-                    <ul class="resume-list">
-                        <li>Architected a hybrid NeuMF model ((GMF + MLP)) that captures the subtle, nonlinear patterns behind why people like what they like, going well beyond what plain matrix factorization can express.</li>
-                        <li>Turned a research notebook into a living product: a FastAPI + PyTorch backend serving live predictions, wrapped in an interactive Streamlit/Plotly dashboard where users could watch recommendations adapt in real time.</li>
-                    </ul>
+            <div class="hero-copy">
+                <p class="eyebrow">Machine Learning Engineer · Software Developer</p>
+                <h1 id="hero-title">
+                    I build systems that find
+                    <span class="accent">meaning in noise.</span>
+                </h1>
+                <p class="hero-intro">
+                    Intelligent search, recommendation, and computer-vision systems—engineered from first principles and shaped into working products.
+                </p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#work">Enter selected work <span aria-hidden="true">↘</span></a>
+                    <a class="text-link" href="https://drive.google.com/file/d/1hB6PD66EAQ8dL_WPQ_tKQCWP3nqLCSfY/view?usp=sharing" target="_blank" rel="noreferrer">Read résumé <span aria-hidden="true">↗</span></a>
                 </div>
             </div>
 
-        </div>
-    </section>
-
-    <section id="skills" class="section">
-        <h2 class="section-title">Technical <span>Skills</span></h2>
-        <div class="skills-grid">
-            <div class="skill-category glass-panel">
-                <h3><i class="fas fa-code"></i> Languages</h3>
-                <div class="skill-tags">
-                    <span class="tag"><i class="fab fa-python"></i> Python (Primary)</span>
-                    <span class="tag"><i class="fas fa-c"></i> C / C++</span>
-                    <span class="tag"><i class="fab fa-js"></i> JavaScript</span>
-                    <span class="tag"><i class="fas fa-chart-bar"></i> R</span>
-                    <span class="tag"><i class="fas fa-database"></i> SQL</span>
+            <div class="hero-instrument" aria-hidden="true">
+                <div class="dial">
+                    <span class="dial-ring ring-one"></span>
+                    <span class="dial-ring ring-two"></span>
+                    <span class="dial-hand"></span>
+                    <span class="dial-core">S</span>
                 </div>
-            </div>
-            
-            <div class="skill-category glass-panel">
-                <h3><i class="fas fa-brain"></i> AI & ML Tooling</h3>
-                <div class="skill-tags">
-                    <span class="tag">PyTorch</span>
-                    <span class="tag">TensorFlow</span>
-                    <span class="tag">Keras</span>
-                    <span class="tag">Scikit-Learn</span>
-                    <span class="tag">Sentence Transformers</span>
-                    <span class="tag">CLIP</span>
-                    <span class="tag">MobileNetV2</span>
-                    <span class="tag">NeuMF</span>
-                </div>
-            </div>
-            
-            <div class="skill-category glass-panel">
-                <h3><i class="fas fa-search"></i> Retrieval & Vectors</h3>
-                <div class="skill-tags">
-                    <span class="tag">Qdrant</span>
-                    <span class="tag">Semantic Embeddings</span>
-                    <span class="tag">Cosine-Similarity</span>
-                    <span class="tag">RAG Concepts</span>
+                <div class="instrument-label mono">
+                    <span>Signal acquired</span>
+                    <span>System / online</span>
                 </div>
             </div>
 
-            <div class="skill-category glass-panel">
-                <h3><i class="fas fa-server"></i> Backend & APIs</h3>
-                <div class="skill-tags">
-                    <span class="tag">FastAPI</span>
-                    <span class="tag">Django</span>
-                    <span class="tag">REST API Design</span>
-                    <span class="tag">JWT Auth</span>
-                    <span class="tag">Postman Testing</span>
-                </div>
+            <div class="scroll-cue mono" aria-hidden="true">
+                <span>Scroll to investigate</span>
+                <span class="scroll-line"></span>
             </div>
+        </section>
 
-            <div class="skill-category glass-panel">
-                <h3><i class="fas fa-desktop"></i> Frontend & Viz</h3>
-                <div class="skill-tags">
-                    <span class="tag">Streamlit</span>
-                    <span class="tag">Plotly</span>
-                    <span class="tag"><i class="fab fa-html5"></i> HTML</span>
-                    <span class="tag"><i class="fab fa-css3-alt"></i> CSS</span>
+        <section class="statement reveal" aria-label="Professional statement">
+            <p class="section-index mono">The premise / 00</p>
+            <blockquote>
+                “The best models do more than predict. They reveal structure that was already there.”
+            </blockquote>
+            <p class="statement-note">My work moves from research and experimentation to reliable, observable products.</p>
+        </section>
+
+        <section class="work section-shell" id="work" aria-labelledby="work-title">
+            <header class="section-header reveal">
+                <div>
+                    <p class="section-index mono">Selected work / 01</p>
+                    <h2 id="work-title">Six investigations.<br>One trajectory.</h2>
                 </div>
-            </div>
+                <p>Each project begins with an uncertain signal and ends with a system you can test.</p>
+            </header>
 
-            <div class="skill-category glass-panel">
-                <h3><i class="fas fa-database"></i> Data & Systems</h3>
-                <div class="skill-tags">
-                    <span class="tag">SQL / SQLite</span>
-                    <span class="tag">Firebase</span>
-                    <span class="tag"><i class="fab fa-git-alt"></i> Git</span>
-                    <span class="tag"><i class="fab fa-docker"></i> Docker</span>
-                    <span class="tag"><i class="fab fa-linux"></i> Linux CLI</span>
-                    <span class="tag">Multithreading</span>
-                    <span class="tag">OS Concepts</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="section">
-        <h2 class="section-title">Featured <span>Projects</span></h2>
-        <div class="projects-grid">
-            <!-- NCF Movie Recommender -->
-            <div class="project-card glass-panel">
-                <div class="project-icon"><i class="fas fa-film"></i></div>
-                <div class="project-content">
-                    <h3>Neural Collaborative Filtering Movie Recommender</h3>
-                    <ul class="resume-list">
-                        <li>Architected a hybrid NeuMF model (GMF + MLP) that captures nonlinear patterns for personalized recommendations, going beyond plain matrix factorization.</li>
-                        <li>Built a FastAPI + PyTorch backend serving live predictions, wrapped in an interactive Streamlit/Plotly dashboard where recommendations adapt in real time.</li>
-                    </ul>
-                    <div class="project-tech mt-3">
-                        <span>Python</span>
-                        <span>PyTorch</span>
-                        <span>FastAPI</span>
-                        <span>Streamlit</span>
+            <div class="case-list">
+                <article class="case case-featured reveal">
+                    <div class="case-sequence mono">
+                        <span>Case 01</span>
+                        <span>2026</span>
                     </div>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/levithion/NCF-Based-Movie-Recommender-System" target="_blank"><i class="fab fa-github"></i> View Code</a>
-                    <a href="article-ncf-recommender.html"><i class="fas fa-file-alt"></i> Read Article</a>
-                </div>
-            </div>
-
-            <!-- Book Recommender -->
-            <div class="project-card glass-panel">
-                <div class="project-icon"><i class="fas fa-book"></i></div>
-                <div class="project-content">
-                    <h3>Query-Based Book Recommendation System</h3>
-                    <ul class="resume-list">
-                        <li>Engineered and deployed an interactive semantic search platform on Streamlit Community Cloud that leverages all-MiniLM-L6-v2 embeddings and cosine similarity to translate plain-language queries into meaning-aware recommendations across a 7,000+ book library.</li>
-                    </ul>
-                    <div class="project-tech mt-3">
-                        <span>Python</span>
-                        <span>Sentence Transformers</span>
-                        <span>Streamlit</span>
+                    <div class="case-main">
+                        <p class="case-kicker">Multimodal retrieval</p>
+                        <h3>Lumina</h3>
+                        <p class="case-subtitle">Finding an image without knowing its name.</p>
+                        <p class="case-description">A distributed semantic search engine that translates natural-language intent into visual results across more than 8,000 images.</p>
+                        <div class="case-actions">
+                            <a class="button button-primary" href="article-lumina.html">Examine the system <span aria-hidden="true">→</span></a>
+                            <a class="text-link" href="https://github.com/levithion/Lumina" target="_blank" rel="noreferrer">Source code <span aria-hidden="true">↗</span></a>
+                        </div>
                     </div>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/levithion/Query-Based-Book-Recommender-System-Using-Sentence-Transformers" target="_blank"><i class="fab fa-github"></i> View Code</a>
-                    <a href="article-book-recommender.html"><i class="fas fa-file-alt"></i> Read Article</a>
-                </div>
-            </div>
-            <!-- Lumina -->
-            <div class="project-card glass-panel">
-                <div class="project-icon"><i class="fas fa-search"></i></div>
-                <div class="project-content">
-                    <h3>Lumina Distributed Multimodal Semantic Search Engine</h3>
-                    <span class="project-date">Feb 2026 - Mar 2026</span>
-                    <ul class="resume-list">
-                        <li>Built a search engine over 8,000+ images using natural-language queries, combining CLIP-VIT-B-32 embeddings with a Qdrant vector database for fast, accurate multimodal retrieval.</li>
-                        <li>Engineered a FastAPI ingestion backend with batch upserts and MPS-accelerated inference, exposed through a health-monitored REST API and Streamlit dashboard.</li>
-                    </ul>
-                    <div class="project-tech mt-3">
-                        <span>Python</span>
-                        <span>CLIP</span>
-                        <span>Qdrant</span>
-                        <span>FastAPI</span>
+                    <div class="case-data">
+                        <div><strong>8K+</strong><span>Images indexed</span></div>
+                        <div><strong>CLIP</strong><span>Joint embedding</span></div>
+                        <div><strong>Qdrant</strong><span>Vector retrieval</span></div>
                     </div>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/levithion/Lumina" target="_blank"><i class="fab fa-github"></i> View Code</a>
-                    <a href="article-lumina.html"><i class="fas fa-file-alt"></i> Read Article</a>
-                </div>
-            </div>
+                </article>
 
-            <!-- Context-Aware Huffman -->
-            <div class="project-card glass-panel">
-                <div class="project-icon"><i class="fas fa-compress-arrows-alt"></i></div>
-                <div class="project-content">
-                    <h3>Context-Aware Huffman Compressor</h3>
-                    <span class="project-date">Aug 2025 - Dec 2025</span>
-                    <ul class="resume-list">
-                        <li>Designed a context-aware Huffman coding scheme using an N-order Markov model, improving compression ratios by 15-20% over standard global-frequency Huffman on context-heavy text datasets.</li>
-                        <li>Built a Streamlit UI and CLI tool for entropy benchmarking, demonstrating a reduction of 1.2 bits/token on average and closely approaching theoretical conditional entropy bounds.</li>
-                    </ul>
-                    <div class="project-tech mt-3">
-                        <span>Python</span>
-                        <span>Algorithms</span>
-                        <span>Data Compression</span>
+                <article class="case reveal">
+                    <div class="case-sequence mono"><span>Case 02</span><span>2025</span></div>
+                    <div class="case-main">
+                        <p class="case-kicker">Personalization</p>
+                        <h3>Neural Collaborative Filtering</h3>
+                        <p class="case-subtitle">Learning the hidden geometry of taste.</p>
+                        <p class="case-description">A hybrid NeuMF recommendation model served through a live FastAPI and PyTorch prediction pipeline.</p>
+                        <div class="case-actions">
+                            <a class="text-link" href="article-ncf-recommender.html">Read case study <span aria-hidden="true">→</span></a>
+                            <a class="text-link muted-link" href="https://github.com/levithion/NCF-Based-Movie-Recommender-System" target="_blank" rel="noreferrer">Code <span aria-hidden="true">↗</span></a>
+                        </div>
                     </div>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/levithion/Context-Aware-Huffman" target="_blank"><i class="fab fa-github"></i> View Code</a>
-                    <a href="article-huffman.html"><i class="fas fa-file-alt"></i> Read Article</a>
-                </div>
-            </div>
-
-            <!-- Driver Drowsiness -->
-            <div class="project-card glass-panel">
-                <div class="project-icon"><i class="fas fa-car-side"></i></div>
-                <div class="project-content">
-                    <h3>Driver Drowsiness Detection System</h3>
-                    <span class="project-date">Jan 2025 - Apr 2025</span>
-                    <ul class="resume-list">
-                        <li>Developed a real-time CNN-based detection pipeline using MobileNetV2, achieving 94% precision and 92% recall in identifying micro-sleep indicators under varying lighting conditions.</li>
-                        <li>Tuned the model for edge deployment, maintaining high detection accuracy while achieving a processing latency of under 50ms (20+ FPS) on resource-constrained hardware.</li>
-                    </ul>
-                    <div class="project-tech mt-3">
-                        <span>Python</span>
-                        <span>MobileNetV2</span>
-                        <span>OpenCV</span>
+                    <div class="case-data">
+                        <div><strong>NeuMF</strong><span>GMF + MLP</span></div>
+                        <div><strong>Live</strong><span>Predictions</span></div>
                     </div>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/levithion/Driver-Drowsiness-Detection" target="_blank"><i class="fab fa-github"></i> View Code</a>
-                    <a href="article-drowsiness.html"><i class="fas fa-file-alt"></i> Read Article</a>
-                </div>
-            </div>
+                </article>
 
-            <!-- Thalassa Chatbot -->
-            <div class="project-card glass-panel">
-                <div class="project-icon"><i class="fas fa-comments"></i></div>
-                <div class="project-content">
-                    <h3>Thalassa - AI Mental Health Chatbot</h3>
-                    <span class="project-date">Sep 2024 - Oct 2024</span>
-                    <ul class="resume-list">
-                        <li>Architected a full-stack mental health platform using Flask, SQLite, and the Groq API (LLaMA 3.1) to deliver an empathetic AI companion with persistent conversational memory.</li>
-                        <li>Implemented JWT-secured authentication, a private journaling system, and dynamic mood-tracking analytics using Chart.js to visualize user data over time.</li>
-                    </ul>
-                    <div class="project-tech mt-3">
-                        <span>Python</span>
-                        <span>Flask</span>
-                        <span>LLaMA 3.1</span>
+                <article class="case reveal">
+                    <div class="case-sequence mono"><span>Case 03</span><span>2025</span></div>
+                    <div class="case-main">
+                        <p class="case-kicker">Information theory</p>
+                        <h3>Context-Aware Huffman</h3>
+                        <p class="case-subtitle">Compression that remembers what came before.</p>
+                        <p class="case-description">An N-order Markov coding scheme that approaches conditional entropy bounds on context-heavy text.</p>
+                        <div class="case-actions">
+                            <a class="text-link" href="article-huffman.html">Read case study <span aria-hidden="true">→</span></a>
+                            <a class="text-link muted-link" href="https://github.com/levithion/Context-Aware-Huffman" target="_blank" rel="noreferrer">Code <span aria-hidden="true">↗</span></a>
+                        </div>
                     </div>
+                    <div class="case-data">
+                        <div><strong>15–20%</strong><span>Ratio improvement</span></div>
+                        <div><strong>1.2</strong><span>Bits/token saved</span></div>
+                    </div>
+                </article>
+
+                <article class="case reveal">
+                    <div class="case-sequence mono"><span>Case 04</span><span>2025</span></div>
+                    <div class="case-main">
+                        <p class="case-kicker">Computer vision</p>
+                        <h3>Drowsiness Detection</h3>
+                        <p class="case-subtitle">Recognizing danger before it becomes an event.</p>
+                        <p class="case-description">An edge-ready MobileNetV2 detection pipeline built for varying light and real-time response.</p>
+                        <div class="case-actions">
+                            <a class="text-link" href="article-drowsiness.html">Read case study <span aria-hidden="true">→</span></a>
+                            <a class="text-link muted-link" href="https://github.com/levithion/Driver-Drowsiness-Detection" target="_blank" rel="noreferrer">Code <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                    <div class="case-data">
+                        <div><strong>94%</strong><span>Precision</span></div>
+                        <div><strong>&lt;50ms</strong><span>Latency</span></div>
+                    </div>
+                </article>
+
+                <article class="case reveal">
+                    <div class="case-sequence mono"><span>Case 05</span><span>2025</span></div>
+                    <div class="case-main">
+                        <p class="case-kicker">Semantic retrieval</p>
+                        <h3>Book Discovery Engine</h3>
+                        <p class="case-subtitle">Search beyond titles, genres, and exact words.</p>
+                        <p class="case-description">Meaning-aware book discovery using sentence embeddings and natural-language queries over a 7,000+ title library.</p>
+                        <div class="case-actions">
+                            <a class="text-link" href="article-book-recommender.html">Read case study <span aria-hidden="true">→</span></a>
+                            <a class="text-link muted-link" href="https://github.com/levithion/Query-Based-Book-Recommender-System-Using-Sentence-Transformers" target="_blank" rel="noreferrer">Code <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                    <div class="case-data">
+                        <div><strong>7K+</strong><span>Books searched</span></div>
+                        <div><strong>384D</strong><span>Embeddings</span></div>
+                    </div>
+                </article>
+
+                <article class="case reveal">
+                    <div class="case-sequence mono"><span>Case 06</span><span>2024</span></div>
+                    <div class="case-main">
+                        <p class="case-kicker">Conversational AI</p>
+                        <h3>Thalassa</h3>
+                        <p class="case-subtitle">A private space for reflection and support.</p>
+                        <p class="case-description">A full-stack AI companion with persistent memory, secure journaling, and mood-tracking analytics.</p>
+                        <div class="case-actions">
+                            <a class="text-link" href="article-thalassa.html">Read case study <span aria-hidden="true">→</span></a>
+                            <a class="text-link muted-link" href="https://github.com/levithion/Depressed-Person-Chatbot" target="_blank" rel="noreferrer">Code <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                    <div class="case-data">
+                        <div><strong>JWT</strong><span>Private access</span></div>
+                        <div><strong>LLaMA</strong><span>Dialogue engine</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="profile section-shell" id="profile" aria-labelledby="profile-title">
+            <div class="profile-grid">
+                <header class="section-header reveal">
+                    <div>
+                        <p class="section-index mono">The trajectory / 02</p>
+                        <h2 id="profile-title">Research.<br>Then reality.</h2>
+                    </div>
+                </header>
+
+                <div class="profile-copy reveal">
+                    <p class="lead">I’m an AI/ML-focused software engineer from India, interested in the point where model quality meets system quality.</p>
+                    <p>I build LLM-integrated applications, retrieval systems, and full-stack ML pipelines in Python. My approach is experiment-driven: understand the mechanism, measure what matters, then turn the result into a product people can use.</p>
                 </div>
-                <div class="project-links">
-                    <a href="https://github.com/levithion/Depressed-Person-Chatbot" target="_blank"><i class="fab fa-github"></i> View Code</a>
-                    <a href="article-thalassa.html"><i class="fas fa-file-alt"></i> Read Article</a>
+
+                <div class="timeline reveal">
+                    <div class="timeline-line" aria-hidden="true"></div>
+                    <article class="timeline-entry">
+                        <div class="timeline-time mono">Present</div>
+                        <div>
+                            <h3>Building intelligent systems</h3>
+                            <p>Deepening work across multimodal retrieval, agentic tooling, and production ML infrastructure.</p>
+                        </div>
+                    </article>
+                    <article class="timeline-entry">
+                        <div class="timeline-time mono">2025</div>
+                        <div>
+                            <h3>Machine Learning Intern</h3>
+                            <p class="timeline-place">Indian Institute of Technology (BHU), Varanasi</p>
+                            <p>Architected a hybrid recommendation model and translated the research into an interactive prediction product.</p>
+                        </div>
+                    </article>
+                    <article class="timeline-entry">
+                        <div class="timeline-time mono">Origin</div>
+                        <div>
+                            <h3>Curiosity, formalized</h3>
+                            <p>Algorithms, probability, computer systems, and a recurring question: how can software extract useful structure from complexity?</p>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+        <section class="capabilities section-shell" id="capabilities" aria-labelledby="capabilities-title">
+            <header class="section-header reveal">
+                <div>
+                    <p class="section-index mono">The mechanism / 03</p>
+                    <h2 id="capabilities-title">Tools are temporary.<br>Thinking compounds.</h2>
+                </div>
+                <p>A practical stack for moving from model experiments to observable software.</p>
+            </header>
 
-
-    <footer id="contact" class="footer">
-        <div class="footer-content">
-            <h2>Let's build something <span>remarkable</span> together.</h2>
-            <div class="footer-links">
-                <a href="mailto:your.email@example.com" class="footer-link">
-                    <i class="fas fa-envelope"></i> Email
-                </a>
-                <a href="https://www.linkedin.com/in/shshank-singh-levithion/" target="_blank" class="footer-link">
-                    <i class="fab fa-linkedin-in"></i> LinkedIn
-                </a>
-                <a href="https://github.com/levithion" target="_blank" class="footer-link">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="https://codolio.com/profile/7kai" target="_blank" class="footer-link">
-                    <i class="fas fa-laptop-code"></i> Codolio
-                </a>
+            <div class="capability-grid reveal">
+                <article>
+                    <span class="capability-number mono">01</span>
+                    <h3>Intelligence</h3>
+                    <p>PyTorch · TensorFlow · Scikit-learn · Sentence Transformers · CLIP · LLM systems</p>
+                </article>
+                <article>
+                    <span class="capability-number mono">02</span>
+                    <h3>Retrieval</h3>
+                    <p>Qdrant · Vector embeddings · Semantic search · Recommendation systems · RAG</p>
+                </article>
+                <article>
+                    <span class="capability-number mono">03</span>
+                    <h3>Engineering</h3>
+                    <p>Python · FastAPI · Django · REST · SQL · Docker · Git · Linux</p>
+                </article>
+                <article>
+                    <span class="capability-number mono">04</span>
+                    <h3>Interface</h3>
+                    <p>Streamlit · Plotly · JavaScript · HTML · CSS · Data storytelling</p>
+                </article>
             </div>
-            <p class="copyright">© 2026 Shshank Singh. All rights reserved. Built with ❤️ and Code.</p>
-        </div>
+        </section>
+
+        <section class="contact" id="contact" aria-labelledby="contact-title">
+            <div class="contact-frame reveal">
+                <p class="section-index mono">The next sequence / 04</p>
+                <h2 id="contact-title">The next project<br>hasn’t happened yet.</h2>
+                <p>Have a difficult problem, an ambitious experiment, or an intelligent product to build?</p>
+                <div class="contact-actions">
+                    <a class="button button-light" href="https://www.linkedin.com/in/shshank-singh-levithion/" target="_blank" rel="noreferrer">Start a conversation <span aria-hidden="true">↗</span></a>
+                    <a class="text-link light-link" href="https://github.com/levithion" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+                    <a class="text-link light-link" href="https://codolio.com/profile/7kai" target="_blank" rel="noreferrer">Codolio <span aria-hidden="true">↗</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© 2026 Shshank Singh</span>
+        <span class="mono">Signal remains / 25.3176° N</span>
+        <a href="#top">Return to origin ↑</a>
     </footer>
 
     <script src="script.js"></script>
