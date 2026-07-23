@@ -37,8 +37,18 @@
                 <li><strong>Benchmarking Tools:</strong> I built a comprehensive CLI tool and a Streamlit UI to benchmark the entropy. The system dynamically evaluates file sizes, demonstrating how close we can get to the theoretical limits of conditional entropy.</li>
             </ul>
 
+            <figure class="article-figure">
+                <img src="assets/projects/huffman-pipeline.png" alt="Context-aware Huffman compression pipeline from text input through context analysis and tree generation to compressed output">
+                <figcaption><span>FIG 01 / COMPRESSION PIPELINE</span><span>Context changes the codebook selected for each token</span></figcaption>
+            </figure>
+
             <h2>Challenges & Learnings</h2>
             <p>The primary challenge was managing the state space. As you increase the Markov order (looking at 2, 3, or 4 preceding characters instead of just 1), the number of required Huffman trees explodes exponentially. This causes severe memory overhead. I had to implement pruning strategies and highly optimized data structures in Python to ensure the compressor ran fast without consuming all available RAM. It was a rigorous exercise in algorithmic complexity and optimization.</p>
+
+            <figure class="article-figure">
+                <img src="assets/projects/huffman-compression.png" alt="Benchmark chart comparing compression ratios for regular and context-aware Huffman coding">
+                <figcaption><span>FIG 02 / BENCHMARK</span><span>Context-aware coding leads across every tested data shape</span></figcaption>
+            </figure>
 
             <h2>Final Thoughts</h2>
             <p>This project was deeply satisfying. By injecting probabilistic context into a classic algorithm, I managed to improve compression ratios by 15-20% on context-heavy text, reducing the average size by 1.2 bits per token. It stands as a testament to the fact that returning to first principles and questioning standard assumptions can yield incredible results.</p>

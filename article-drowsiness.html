@@ -38,6 +38,11 @@
             </ul>
             <p>The final system achieved an impressive 94% precision and 92% recall across various testing datasets.</p>
 
+            <figure class="article-figure">
+                <img class="model-crop" src="https://raw.githubusercontent.com/levithion/Driver-Drowsiness-Detection/main/model.png" alt="Top portion of the MobileNetV2 model architecture used in the drowsiness detection system">
+                <figcaption><span>FIG 01 / MODEL GRAPH</span><span>MobileNetV2 backbone optimized for edge inference</span></figcaption>
+            </figure>
+
             <h2>Challenges & Learnings</h2>
             <p>The primary battle was the trade-off between accuracy and latency. High-accuracy models are usually heavy and slow. I spent weeks tuning the MobileNetV2 architecture, implementing quantization, and optimizing the OpenCV processing loop. The goal was to run this on resource-constrained hardware (like a Raspberry Pi inside a dashboard). Eventually, I managed to push the processing latency to under 50ms, allowing a smooth 20+ Frames Per Second (FPS) detection rate without sacrificing reliability.</p>
 

@@ -38,6 +38,11 @@
             </ul>
             <p>When you type a query, the FastAPI backend uses CLIP to turn your text into a vector, asks Qdrant for the closest image vectors, and serves the results back to a streamlined Streamlit dashboard.</p>
 
+            <figure class="article-figure">
+                <img src="assets/projects/lumina-architecture.png" alt="Lumina architecture showing the frontend, FastAPI backend, CLIP encoders, image ingestion pipeline, and Qdrant vector database">
+                <figcaption><span>FIG 01 / SYSTEM ARCHITECTURE</span><span>Query and ingestion paths are independently scalable</span></figcaption>
+            </figure>
+
             <h2>Challenges & Learnings</h2>
             <p>Scaling up to 8,000+ images isn't just a matter of running a loop. My initial ingestion scripts kept timing out or crashing due to memory limits. I had to learn how to implement robust batch upserts, carefully chunking the data and monitoring the API health during the massive upload process. Getting the MPS acceleration properly configured for PyTorch on Mac architecture was also a steep, but very rewarding, learning curve.</p>
 

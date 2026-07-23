@@ -38,6 +38,16 @@
             </ul>
             <p>I wrapped all of this logic into a sleek, interactive frontend using <strong>Streamlit</strong> and deployed it on the Streamlit Community Cloud so anyone could access it from their browser.</p>
 
+            <div class="article-diagram" role="img" aria-label="Semantic book retrieval pipeline from query through MiniLM embedding and cosine similarity to ranked books">
+                <div class="article-diagram-label"><span>FIG 01 / RETRIEVAL PIPELINE</span><span>all-MiniLM-L6-v2</span></div>
+                <div class="diagram-flow">
+                    <div><small>QUERY</small><strong>Natural Language</strong><span>user intent</span></div>
+                    <div><small>ENCODER</small><strong>MiniLM</strong><span>384-dimensional vector</span></div>
+                    <div><small>SEARCH</small><strong>Cosine Similarity</strong><span>5.2K descriptions</span></div>
+                    <div><small>RESULT</small><strong>Ranked Books</strong><span>semantic matches</span></div>
+                </div>
+            </div>
+
             <h2>Challenges & Learnings</h2>
             <p>Working with vector embeddings at scale introduces interesting performance challenges. Calculating cosine similarity across 7,000+ high-dimensional vectors on the fly can become a bottleneck. I spent a significant amount of time optimizing the tensor operations in PyTorch and caching the embeddings to ensure the search felt instantaneous to the user. It taught me a lot about memory management and computational efficiency in Python.</p>
 

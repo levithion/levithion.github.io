@@ -37,6 +37,16 @@
                 <li><strong>Security & Tracking:</strong> Because mental health data is deeply personal, I integrated strict JWT-secured authentication. I also built a private journaling system and a mood-tracking analytics dashboard using Chart.js, allowing users to visualize their emotional state over weeks and months.</li>
             </ul>
 
+            <div class="article-diagram" role="img" aria-label="Thalassa system flow from authenticated client through Flask orchestration and LLaMA to persistent memory">
+                <div class="article-diagram-label"><span>FIG 01 / APPLICATION FLOW</span><span>Stateful LLM system</span></div>
+                <div class="diagram-flow">
+                    <div><small>CLIENT</small><strong>JWT Session</strong><span>private user context</span></div>
+                    <div><small>ORCHESTRATION</small><strong>Flask API</strong><span>prompt + policy</span></div>
+                    <div><small>INTELLIGENCE</small><strong>LLaMA 3.1</strong><span>Groq inference</span></div>
+                    <div><small>MEMORY</small><strong>SQLite</strong><span>journal + mood history</span></div>
+                </div>
+            </div>
+
             <h2>Challenges & Learnings</h2>
             <p>The most delicate part of this project was prompt engineering and conversational flow. An LLM can easily generate generic advice, but tuning it to sound genuinely empathetic and helpful—without trying to practice unlicensed medicine—took significant iteration. From a technical standpoint, managing the context window limit of the LLM while retaining long-term memory required implementing clever summarization and retrieval techniques in the backend.</p>
 

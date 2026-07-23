@@ -38,6 +38,16 @@
             </ul>
             <p>By fusing these together in <strong>PyTorch</strong>, the model achieved a far more nuanced understanding of user preferences. But I didn't want this to just sit in a Jupyter notebook. I engineered a <strong>FastAPI</strong> backend to serve live predictions and wrapped it in an interactive <strong>Streamlit</strong> and <strong>Plotly</strong> dashboard. This meant users could interact with the model in real time, tweaking inputs and watching the recommendations adapt instantly.</p>
 
+            <div class="article-diagram" role="img" aria-label="NeuMF inference architecture from identifiers through embeddings, GMF and MLP branches, to a ranking score">
+                <div class="article-diagram-label"><span>FIG 01 / NEUMF INFERENCE GRAPH</span><span>GMF + MLP</span></div>
+                <div class="diagram-flow">
+                    <div><small>INPUT</small><strong>User + Movie IDs</strong><span>integer tensors</span></div>
+                    <div><small>REPRESENTATION</small><strong>Embeddings</strong><span>learned latent vectors</span></div>
+                    <div><small>DUAL PATH</small><strong>GMF / MLP</strong><span>linear + non-linear</span></div>
+                    <div><small>OUTPUT</small><strong>Ranking Score</strong><span>recommendation probability</span></div>
+                </div>
+            </div>
+
             <h2>Challenges & Learnings</h2>
             <p>The hardest part of this project was balancing the GMF and MLP branches during training. They converge at different rates, and fine-tuning the hyperparameters (like embedding sizes and learning rates) required a lot of methodical experimentation. Another significant challenge was ensuring the inference latency remained low when deployed, so the real-time Streamlit dashboard felt snappy and responsive.</p>
 
