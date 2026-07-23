@@ -432,10 +432,39 @@
     background: #fff;
 }
 
-.article-figure .model-crop {
-    height: 32rem;
-    object-fit: cover;
+.model-scroll {
+    max-height: min(70vh, 46rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    background: #fff;
+    scrollbar-color: var(--cyan) #dce5ec;
+    scrollbar-width: thin;
+}
+
+.model-scroll:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: -2px;
+}
+
+.model-scroll img {
+    width: 100%;
+    max-height: none;
+    object-fit: contain;
     object-position: top;
+}
+
+.model-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+.model-scroll::-webkit-scrollbar-track {
+    background: #dce5ec;
+}
+
+.model-scroll::-webkit-scrollbar-thumb {
+    border: 2px solid #dce5ec;
+    border-radius: 999px;
+    background: var(--cyan);
 }
 
 .article-figure figcaption {
