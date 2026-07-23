@@ -330,23 +330,34 @@
     border: 1px solid #29415e;
     border-radius: 10px;
     background: var(--navy);
-    color: #c0cede;
+    color: #d8e6f4;
 }
 
 .code-sample-header {
-    padding: .7rem 1rem;
+    padding: 0.85rem 1.15rem;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(255,255,255,.12);
-    color: #7f91a7;
-    font: .52rem var(--font-mono);
+    color: #9fb0c4;
+    font: 0.62rem var(--font-mono);
 }
 
 .code-sample pre {
     margin: 0;
-    padding: 1.3rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
     overflow-x: auto;
-    font: .72rem/1.8 var(--font-mono);
+    color: #d8e6f4;
+    font: clamp(0.78rem, 1vw, 0.92rem)/1.75 var(--font-mono);
+    tab-size: 4;
+}
+
+.code-sample pre code {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
 }
 
 .article-callout {
