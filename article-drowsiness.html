@@ -45,12 +45,18 @@
                 <li><strong>Output interpretation:</strong> both scalar sigmoid and two-score model outputs are supported, making the serving utility tolerant of alternative exported heads.</li>
             </ul>
 
-            <figure class="article-figure article-figure-scroll">
-                <div class="model-scroll" tabindex="0" aria-label="Scrollable complete MobileNetV2 model graph">
-                    <img src="https://raw.githubusercontent.com/levithion/Driver-Drowsiness-Detection/main/model.png" alt="Complete MobileNetV2 model architecture used in the drowsiness detection system">
+            <div class="article-diagram model-architecture" role="img" aria-label="Complete drowsiness inference flow from camera frame through MobileNetV2 to a temporally smoothed driver alert">
+                <div class="article-diagram-label"><span>FIG 01 / INFERENCE ARCHITECTURE</span><span>MobileNetV2 · edge-oriented pipeline</span></div>
+                <div class="model-flow">
+                    <div><small>01 / INPUT</small><strong>Camera Frame</strong><span>BGR video stream</span></div>
+                    <div><small>02 / ROI</small><strong>Face + Eyes</strong><span>Haar cascade crop</span></div>
+                    <div><small>03 / PREP</small><strong>Normalize</strong><span>RGB · 224 × 224</span></div>
+                    <div class="model-stage"><small>04 / MODEL</small><strong>MobileNetV2</strong><span>feature backbone</span></div>
+                    <div><small>05 / HEAD</small><strong>Binary Classifier</strong><span>alert / drowsy</span></div>
+                    <div class="output-stage"><small>06 / OUTPUT</small><strong>Temporal Alert</strong><span>smoothed confidence</span></div>
                 </div>
-                <figcaption><span>FIG 01 / COMPLETE MODEL GRAPH</span><span>Scroll vertically to inspect the full MobileNetV2 flow</span></figcaption>
-            </figure>
+                <div class="model-readout"><span>INPUT / 224 × 224 × 3</span><span>BACKBONE / DEPTHWISE SEPARABLE CNN</span><span>OUTPUT / CLASS + CONFIDENCE</span></div>
+            </div>
 
             <h2>Three inference modes</h2>
             <h3>Uploaded image</h3>
