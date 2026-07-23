@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#07111f">
     <title>Shshank Singh — Machine Learning Engineer</title>
-    <meta name="description" content="Portfolio of Shshank Singh, a machine learning engineer building multimodal search, recommendation, computer vision, and production AI systems.">
+    <meta name="description" content="Portfolio of Shshank Singh, a machine learning engineer building research-to-code tooling, multimodal search, recommendation, computer vision, and production AI systems.">
+    <meta property="og:title" content="Shshank Singh — Machine Learning Engineer">
+    <meta property="og:description" content="Machine learning systems that work beyond the notebook.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://levithion.github.io/assets/portfolio-og.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shshank Singh — Machine Learning Engineer">
+    <meta name="twitter:description" content="Machine learning systems that work beyond the notebook.">
+    <meta name="twitter:image" content="https://levithion.github.io/assets/portfolio-og.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
@@ -41,14 +49,14 @@
             <div class="hero-copy">
                 <div class="availability"><span></span> status / open_to_work</div>
                 <h1>I build machine learning systems that <em>work beyond the notebook.</em></h1>
-                <p>From multimodal retrieval and recommendation engines to real-time computer vision—modelled, deployed, measured, and turned into usable products.</p>
+                <p>From research-paper compilation and multimodal retrieval to recommendation and real-time computer vision—modelled, validated, deployed, and turned into usable products.</p>
                 <div class="hero-actions">
                     <a class="button button-primary" href="#projects">$ view_projects <span>↓</span></a>
                     <a class="button button-ghost" href="https://github.com/levithion" target="_blank" rel="noreferrer">$ github <span>↗</span></a>
                 </div>
                 <div class="hero-stats" aria-label="Portfolio highlights">
-                    <div><strong>6</strong><span>End-to-end projects</span></div>
-                    <div><strong>4</strong><span>ML domains</span></div>
+                    <div><strong>7</strong><span>End-to-end projects</span></div>
+                    <div><strong>5</strong><span>ML domains</span></div>
                     <div><strong>3</strong><span>Live products</span></div>
                 </div>
             </div>
@@ -63,6 +71,7 @@
 <span class="code-blue">class</span> <span class="code-green">Shshank</span>:
   focus = [
     <span class="code-yellow">"multimodal_search"</span>,
+    <span class="code-yellow">"research_to_code"</span>,
     <span class="code-yellow">"recommendation"</span>,
     <span class="code-yellow">"computer_vision"</span>
   ]
@@ -84,7 +93,7 @@
         </section>
 
         <section class="proof-strip" aria-label="Core technologies">
-            <span>PYTHON</span><i></i><span>PYTORCH</span><i></i><span>FASTAPI</span><i></i><span>QDRANT</span><i></i><span>DOCKER</span><i></i><span>LLM SYSTEMS</span>
+            <span>PYTHON</span><i></i><span>PYTORCH</span><i></i><span>FASTAPI</span><i></i><span>OLLAMA</span><i></i><span>QDRANT</span><i></i><span>LLM SYSTEMS</span>
         </section>
 
         <section class="projects section-shell" id="projects" aria-labelledby="projects-title">
@@ -93,8 +102,31 @@
                     <span class="section-label">01 / Selected engineering work</span>
                     <h2 id="projects-title">Projects with architecture,<br>not just screenshots.</h2>
                 </div>
-                <p>Each system includes the problem, the design decisions, the implementation, and a measurable outcome.</p>
+                <p>Each system includes the problem, the architecture, the implementation, validation evidence, and the trade-offs.</p>
             </header>
+
+            <article class="project-feature project-reverse reveal">
+                <div class="project-visual project-visual-image torchforge-visual">
+                    <div class="visual-toolbar"><span>torchforge_studio.jpg</span><span>paper → PyTorch → proven</span></div>
+                    <img src="assets/projects/torchforge-studio.jpg" alt="TorchForge pipeline transforming a research paper into generated and validated PyTorch code">
+                </div>
+                <div class="project-copy">
+                    <div class="project-meta"><span>01</span><span>Research engineering</span><span>2026</span></div>
+                    <h3>TorchForge</h3>
+                    <p class="project-lede">A local-first compiler pipeline that turns transformer papers into inspectable, executable PyTorch modules.</p>
+                    <p>Built an evidence-preserving workflow that extracts papers, parses architecture topology, generates guarded code, and validates structure, gradients, devices, and runtime behavior through a CLI and browser workspace.</p>
+                    <div class="metrics">
+                        <div><strong>4</strong><span>explicit phases</span></div>
+                        <div><strong>109M</strong><span>BERT parameters verified</span></div>
+                        <div><strong>3</strong><span>compute backends</span></div>
+                    </div>
+                    <div class="tags"><span>PyTorch</span><span>FastAPI</span><span>Ollama</span><span>PyMuPDF</span><span>Next.js</span></div>
+                    <div class="project-links">
+                        <a href="article-torchforge.html">Technical case study →</a>
+                        <a href="https://github.com/levithion/TorchForge" target="_blank" rel="noreferrer">Source ↗</a>
+                    </div>
+                </div>
+            </article>
 
             <article class="project-feature reveal">
                 <div class="project-visual project-visual-image">
@@ -102,7 +134,7 @@
                     <img src="assets/projects/lumina-architecture.png" alt="Lumina system architecture showing Streamlit, FastAPI, CLIP encoders, Qdrant, and the ingestion pipeline">
                 </div>
                 <div class="project-copy">
-                    <div class="project-meta"><span>01</span><span>Multimodal retrieval</span><span>2026</span></div>
+                    <div class="project-meta"><span>02</span><span>Multimodal retrieval</span><span>2026</span></div>
                     <h3>Lumina</h3>
                     <p class="project-lede">Natural-language image search across 8,000+ assets using a shared CLIP embedding space.</p>
                     <p>Designed a decoupled ingestion and search system with batch vector upserts, MPS-accelerated inference, FastAPI serving, Qdrant retrieval, and a Streamlit interface.</p>
@@ -151,7 +183,7 @@
                     </div>
                 </div>
                 <div class="project-copy">
-                    <div class="project-meta"><span>02</span><span>Deep recommendation</span><span>2025</span></div>
+                    <div class="project-meta"><span>03</span><span>Deep recommendation</span><span>2025</span></div>
                     <h3>Neural Movie Recommender</h3>
                     <p class="project-lede">A neural collaborative-filtering model that learns non-linear user–movie interactions from latent embeddings.</p>
                     <p>The repository implementation concatenates 64-dimensional user and movie embeddings, passes them through a 128→64→32 MLP, adds learned user/movie/global biases, and serves ranked predictions through FastAPI.</p>
@@ -175,7 +207,7 @@
                     <img src="assets/projects/huffman-compression.png" alt="Bar chart comparing standard and context-aware Huffman compression ratios across four datasets">
                 </div>
                 <div class="project-copy">
-                    <div class="project-meta"><span>03</span><span>Information theory</span><span>2025</span></div>
+                    <div class="project-meta"><span>04</span><span>Information theory</span><span>2025</span></div>
                     <h3>Context-Aware Huffman</h3>
                     <p class="project-lede">A classic compression algorithm rebuilt with probabilistic context.</p>
                     <p>Created an N-order Markov extension with context-specific Huffman trees, memory-aware pruning, entropy benchmarks, a CLI, and an interactive analysis interface.</p>
@@ -203,7 +235,7 @@
                         <div class="vision-readout"><span>mobilenet_v2</span><span>rolling score</span><span>224 × 224</span></div>
                     </div>
                     <div class="project-card-body">
-                        <div class="project-meta"><span>04</span><span>Computer vision</span></div>
+                        <div class="project-meta"><span>05</span><span>Computer vision</span></div>
                         <h3>Driver Drowsiness Detection</h3>
                         <p>Edge-optimized CNN inference for identifying micro-sleep indicators under changing light conditions.</p>
                         <div class="metric-line"><span><strong>41,793</strong> images</span><span><strong>224px</strong> input</span><span><strong>2-class</strong> output</span></div>
@@ -221,7 +253,7 @@
                         </div>
                     </div>
                     <div class="project-card-body">
-                        <div class="project-meta"><span>05</span><span>Semantic search</span></div>
+                        <div class="project-meta"><span>06</span><span>Semantic search</span></div>
                         <h3>Book Discovery Engine</h3>
                         <p>Natural-language retrieval over thousands of book descriptions using dense sentence embeddings.</p>
                         <div class="metric-line"><span><strong>5.2K+</strong> clean records</span><span><strong>MiniLM</strong> encoder</span></div>
@@ -239,7 +271,7 @@
                         </div>
                     </div>
                     <div class="project-card-body">
-                        <div class="project-meta"><span>06</span><span>LLM application</span></div>
+                        <div class="project-meta"><span>07</span><span>LLM application</span></div>
                         <h3>Thalassa AI Companion</h3>
                         <p>A stateful conversational system with JWT security, private journaling, and mood analytics.</p>
                         <div class="metric-line"><span><strong>LLaMA 3.1</strong></span><span><strong>JWT</strong> auth</span><span><strong>SQL</strong> memory</span></div>
@@ -279,6 +311,7 @@
                     <div class="visual-toolbar"><span>stack.yaml</span><span>validated</span></div>
                     <pre><code><span>language:</span>     [Python, C++, JavaScript, SQL]
 <span>ml:</span>           [PyTorch, TensorFlow, Scikit-learn]
+<span>research:</span>     [PyMuPDF, Pydantic, Ollama]
 <span>embeddings:</span>   [CLIP, SentenceTransformers]
 <span>retrieval:</span>    [Qdrant, cosine_similarity, RAG]
 <span>backend:</span>      [FastAPI, Flask, Django, REST]
@@ -288,7 +321,7 @@
                 <div class="system-layers">
                     <div><span>04</span><strong>EXPERIENCE</strong><small>Streamlit · Plotly · HTML/CSS</small></div>
                     <div><span>03</span><strong>SERVING</strong><small>FastAPI · REST · Docker</small></div>
-                    <div><span>02</span><strong>INTELLIGENCE</strong><small>PyTorch · CLIP · LLMs</small></div>
+                    <div><span>02</span><strong>INTELLIGENCE</strong><small>PyTorch · CLIP · Ollama · LLMs</small></div>
                     <div><span>01</span><strong>DATA</strong><small>SQL · Qdrant · embeddings</small></div>
                 </div>
             </div>
@@ -302,7 +335,7 @@
                 </div>
                 <div class="about-copy">
                     <p class="about-lede">I’m an AI/ML-focused software engineer from India who enjoys turning research questions into systems people can actually run and evaluate.</p>
-                    <p>My work spans retrieval, personalization, computer vision, LLM applications, APIs, data pipelines, and interfaces. I learn by building end-to-end: understand the mechanism, construct the experiment, profile the failure modes, then ship the useful part.</p>
+                    <p>My work spans research tooling, retrieval, personalization, computer vision, LLM applications, APIs, data pipelines, and interfaces. I learn by building end-to-end: understand the mechanism, construct the experiment, preserve the evidence, profile the failure modes, then ship the useful part.</p>
                     <div class="about-links">
                         <a href="https://github.com/levithion" target="_blank" rel="noreferrer">GitHub ↗</a>
                         <a href="https://www.linkedin.com/in/shshank-singh-levithion/" target="_blank" rel="noreferrer">LinkedIn ↗</a>

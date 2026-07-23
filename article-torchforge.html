@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TorchForge Research-to-PyTorch Pipeline | Shshank Singh</title>
+    <meta name="description" content="How TorchForge extracts architecture evidence from research papers, generates guarded PyTorch modules, and validates them across CPU, CUDA, and Apple MPS.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="article.css">
+</head>
+<body class="article-page">
+    <nav class="article-nav">
+        <a class="article-brand" href="index.html"><span class="article-brand-mark">SS</span><span class="article-brand-name">Shshank Singh</span></a>
+        <a class="article-back" href="index.html#projects">← All work</a>
+    </nav>
+    <main class="article-shell">
+        <div class="article-header">
+            <p class="article-kicker">Project 01 / Research engineering</p>
+            <h1 class="article-title">TorchForge: From Research Paper to Proven PyTorch</h1>
+            <p class="article-date">Jul 2026</p>
+        </div>
+        <article class="article-content">
+            <div class="article-summary">
+                <p>TorchForge is a local-first research engineering pipeline that converts transformer and NLP papers into structured architecture evidence, importable PyTorch modules, and durable validation reports.</p>
+                <div class="article-facts">
+                    <div><strong>4 phases</strong><span>Extract, parse, compile, validate</span></div>
+                    <div><strong>109,482,240</strong><span>Certified BERT encoder parameters</span></div>
+                    <div><strong>CPU · CUDA · MPS</strong><span>Portable runtime validation</span></div>
+                </div>
+            </div>
+
+            <figure class="article-figure">
+                <img src="assets/projects/torchforge-studio.jpg" alt="TorchForge pipeline transforming a research paper into generated and validated PyTorch code">
+                <figcaption><span>FIG 01 / PIPELINE OVERVIEW</span><span>Paper → topology → module → runtime evidence</span></figcaption>
+            </figure>
+
+            <h2>Problem and objective</h2>
+            <p>Implementing a model from a research paper is not a simple translation task. Architecture details are scattered across prose, equations, diagrams, tables, and appendices. A generated Python file can look plausible while silently omitting a connection, misreading a dimension, or failing as soon as gradients and realistic tensors are introduced.</p>
+            <p>TorchForge asks a stricter question: can a paper become an implementation whose assumptions, structure, source, and runtime evidence remain inspectable? The system keeps every phase explicit and writes durable artifacts so later stages consume recorded evidence instead of relying on hidden application state.</p>
+
+            <h2>Four-phase architecture</h2>
+            <ul>
+                <li><strong>Extract:</strong> PyMuPDF recovers text, metadata, embedded images, and high-resolution candidate figure pages, with optional Nougat OCR.</li>
+                <li><strong>Parse:</strong> certified architecture profiles or local Ollama vision models convert paper evidence into a Pydantic-validated topology graph.</li>
+                <li><strong>Compile:</strong> a deterministic reference compiler or local code model creates one device-agnostic <code>torch.nn.Module</code>, guarded by static AST checks.</li>
+                <li><strong>Validate:</strong> the pipeline instantiates the module, executes representative tensors, checks outputs and gradients, and can return runtime failures to the compiler for repair.</li>
+            </ul>
+
+            <div class="code-sample">
+                <div class="code-sample-header"><span>torchforge / durable contract</span><span>manifest.json</span></div>
+                <pre><code>paper.pdf
+  → extracted text + figures
+  → topology.json
+  → generated_model.py
+  → validation.json
+
+manifest.json records every phase,
+artifact path, warning, and outcome.</code></pre>
+            </div>
+
+            <h2>Certified behavior and safety gates</h2>
+            <p>When the original BERT paper is identified unambiguously, TorchForge uses a certified BERT Base profile rather than asking a small vision model to reconstruct known details. The resulting topology includes 12 encoder layers, 12 attention heads, a 768-wide hidden state, a 3,072-wide intermediate layer, post-normalization residual blocks, attention masks, segment IDs, and the pooler.</p>
+            <p>The generated encoder is verified at 109,482,240 parameters. An optional reference suite maps identical weights into Hugging Face <code>BertModel</code> and TorchForge BERT, then compares masked and segmented forward outputs numerically.</p>
+            <p>Unknown papers remain model interpretations. TorchForge validates graph IDs, endpoints, shapes, bounds, and assumptions; recalibrates confidence when evidence is incomplete; and blocks compilation below a 0.60 confidence threshold. That gate prevents “generated code” from being mistaken for a successful reconstruction.</p>
+
+            <div class="article-callout">
+                <strong>Trust boundary</strong>
+                <p>Static AST checks reject several dangerous or invalid patterns, but generated Python is not a security sandbox. TorchForge is designed for trusted papers and local models; untrusted experiments still belong in an isolated account, container, or virtual machine.</p>
+            </div>
+
+            <h2>One engine, two interfaces</h2>
+            <p>The CLI supports single-paper extraction, directory watching, topology parsing, compilation, validation, and API serving. TorchForge Studio exposes the same services in a browser workspace with PDF upload, phase controls, local-model health, device status, paper history, progress, and artifact inspection.</p>
+            <p>The backend is built with FastAPI, PyTorch, Pydantic, and PyMuPDF. Studio uses Next.js, React, TypeScript, and a local API connection. Runtime validation selects CUDA first, then Apple MPS, then CPU, so the generated module remains portable rather than being tied to the machine that created it.</p>
+
+            <h2>Outcome and next steps</h2>
+            <p>TorchForge turns research reproduction into an auditable compilation pipeline. Its strongest result is not merely code generation; it is the chain of evidence between the paper, the extracted topology, the guarded source, and the runtime report.</p>
+            <p>Current support is deepest for certified BERT Base behavior. Other transformer and NLP papers rely on local vision interpretation and code generation, so their outputs remain bounded by evidence quality, model context, and the safety gate. Expanding the certified architecture library and adding more conformance profiles are the clearest next steps.</p>
+
+            <div class="article-links">
+                <a href="https://github.com/levithion/TorchForge" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
+            <a href="index.html#projects" class="back-link">Return to portfolio <span>→</span></a>
+        </article>
+    </main>
+    <footer class="article-footer"><span>© 2026 Shshank Singh</span><span>Engineering portfolio / Project documentation</span></footer>
+</body>
+</html>

@@ -169,6 +169,7 @@ img { display: block; max-width: 100%; }
 .visual-toolbar { background: #e8edf1; color: #5f6d7c; border-color: #d4dde4; }
 .project-visual-image img { width: 100%; aspect-ratio: 1.65; object-fit: contain; padding: 1.2rem; background: #fff; }
 .chart-visual img { padding: 0; object-fit: cover; }
+.torchforge-visual img { padding: 0; object-fit: cover; background: #050b08; }
 .project-meta { display: flex; gap: .8rem; align-items: center; color: #708095; font: .58rem var(--font-mono); text-transform: uppercase; }
 .project-meta span:first-child { color: #2b7898; }
 .project-meta span + span::before { content: "/"; margin-right: .8rem; color: #a7b3c0; }
