@@ -277,6 +277,154 @@ img { display: block; max-width: 100%; }
 .site-footer { padding:2rem var(--page); display:flex; justify-content:space-between; gap:2rem; background:var(--navy); color:#72849a; font:.55rem var(--font-mono); }
 .site-footer a { color:white; }
 
+/* Developer workspace theme */
+body {
+    background: var(--navy);
+}
+
+.projects,
+.stack,
+.about {
+    position: relative;
+    background-color: #081421;
+    background-image:
+        linear-gradient(rgba(79, 140, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79, 140, 255, 0.035) 1px, transparent 1px);
+    background-size: 54px 54px;
+    color: var(--white);
+}
+
+.stack {
+    background-color: #0a1726;
+}
+
+.section-label,
+.project-meta span:first-child {
+    color: var(--cyan);
+}
+
+.section-heading > p,
+.project-copy > p,
+.project-card-body > p,
+.about-copy p {
+    color: #94a6bb;
+}
+
+.project-feature,
+.project-grid,
+.about-copy {
+    border-color: #23374f;
+}
+
+.project-visual,
+.project-card {
+    border-color: #29415e;
+    background: #0b1929;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
+}
+
+.project-visual .visual-toolbar {
+    border-color: #29415e;
+    background: #0d1c2f;
+    color: #8295ab;
+}
+
+.project-copy h3,
+.project-card h3 {
+    color: var(--white);
+}
+
+.project-copy h3::before,
+.project-card h3::before {
+    content: "./";
+    margin-right: 0.12em;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 0.42em;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    vertical-align: 0.45em;
+}
+
+.project-lede {
+    color: #e4edf6 !important;
+}
+
+.metrics,
+.metric-line {
+    border-color: #29415e;
+}
+
+.metrics div {
+    border-color: #29415e;
+}
+
+.metrics strong,
+.metric-line strong {
+    color: var(--white);
+}
+
+.metrics span,
+.metric-line {
+    color: #8294aa;
+}
+
+.tags span {
+    border-color: #29415e;
+    background: #0d1c2e;
+    color: #a7b7ca;
+}
+
+.project-links a,
+.about-links a {
+    color: var(--cyan);
+}
+
+.search-visual {
+    background: #091624;
+}
+
+.mock-search,
+.book-results > div {
+    border-color: #29415e;
+    background: #0d1c2e;
+    color: #dce7f2;
+}
+
+.mock-search span {
+    color: var(--cyan);
+}
+
+.mock-search i,
+.book-results small {
+    color: #8294aa;
+}
+
+.system-layers div {
+    border-color: #29415e;
+    background: #0d1c2e;
+}
+
+.system-layers span {
+    color: var(--cyan);
+}
+
+.system-layers strong {
+    color: var(--white);
+}
+
+.system-layers small {
+    color: #8294aa;
+}
+
+.about-copy .about-lede {
+    color: #e4edf6;
+}
+
+.contact {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .reveal { opacity:0; transform:translateY(2rem); transition:opacity 700ms ease, transform 700ms ease; }
 .reveal.is-visible { opacity:1; transform:none; }
 
