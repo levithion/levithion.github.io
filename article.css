@@ -1,10 +1,10 @@
 .article-page {
-    --signal: #2b7898;
+    --signal: #087fa5;
     --signal-light: var(--cyan);
     --paper-dim: #91a0b5;
     --line-dark: rgba(16, 25, 39, 0.16);
     --font-display: var(--font-body);
-    background: var(--paper);
+    background: #eaf0f5;
     color: var(--ink);
 }
 
@@ -24,7 +24,9 @@
     min-height: 5.5rem;
     padding: 0 var(--page);
     color: var(--paper);
-    border-bottom: 1px solid rgba(255,255,255,.13);
+    border-bottom: 1px solid #29415e;
+    background: rgba(7, 17, 31, 0.88);
+    backdrop-filter: blur(14px);
 }
 
 .article-brand {
@@ -42,9 +44,13 @@
     place-items: center;
     width: 2.3rem;
     height: 2.3rem;
-    border: 1px solid var(--paper);
-    font-family: var(--font-display);
-    font-size: 1.15rem;
+    border: 1px solid var(--cyan);
+    border-radius: 7px;
+    background: var(--cyan);
+    color: var(--navy);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
 }
 
 .article-back {
@@ -81,13 +87,17 @@
 
 .article-header {
     position: relative;
-    min-height: 78svh;
+    min-height: 68svh;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 9rem var(--page) clamp(4rem, 8vw, 8rem);
+    padding: 9rem var(--page) clamp(4rem, 7vw, 6rem);
     overflow: hidden;
-    background: var(--ink);
+    background-color: var(--navy);
+    background-image:
+        linear-gradient(rgba(79, 140, 255, 0.11) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79, 140, 255, 0.11) 1px, transparent 1px);
+    background-size: 54px 54px;
     color: var(--paper);
     text-align: left;
 }
@@ -95,15 +105,19 @@
 .article-header::before {
     content: "";
     position: absolute;
-    top: 9rem;
+    top: 8rem;
     right: var(--page);
-    width: clamp(12rem, 29vw, 31rem);
-    aspect-ratio: 1;
-    border: 1px solid rgba(200, 144, 59, 0.28);
-    border-radius: 50%;
+    width: clamp(16rem, 28vw, 30rem);
+    aspect-ratio: 1.35;
+    border: 1px solid #29415e;
+    border-radius: 12px;
+    background:
+        linear-gradient(135deg, rgba(53, 217, 255, 0.09), transparent 55%),
+        repeating-linear-gradient(0deg, transparent 0 25px, rgba(53, 217, 255, 0.055) 26px),
+        repeating-linear-gradient(90deg, transparent 0 25px, rgba(53, 217, 255, 0.055) 26px);
     box-shadow:
-        0 0 0 clamp(2rem, 5vw, 5.5rem) rgba(200, 144, 59, 0.035),
-        0 0 0 clamp(4rem, 10vw, 11rem) rgba(200, 144, 59, 0.02);
+        inset 0 0 0 1rem rgba(7, 17, 31, 0.38),
+        0 24px 70px rgba(0, 0, 0, 0.22);
 }
 
 .article-header::after {
@@ -128,23 +142,33 @@
 }
 
 .article-kicker {
-    margin-bottom: 1.5rem;
+    width: fit-content;
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 0.72rem;
+    border: 1px solid #29415e;
+    border-radius: 999px;
+    background: rgba(9, 24, 41, 0.78);
     color: var(--signal-light);
+}
+
+.article-kicker::before {
+    content: "●";
+    margin-right: 0.55rem;
+    color: var(--green);
 }
 
 .article-title {
     position: relative;
     z-index: 1;
-    max-width: 15ch;
+    max-width: 16ch;
     margin: 0;
     color: var(--paper);
     font-family: var(--font-display);
-    font-size: clamp(3rem, 5.4vw, 6rem);
-    font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 0.92;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
     text-wrap: balance;
-    text-transform: uppercase;
 }
 
 .article-date {
@@ -155,40 +179,48 @@
 }
 
 .article-content {
-    max-width: 54rem;
+    max-width: 72rem;
     margin: 0 auto;
-    padding: clamp(5rem, 10vw, 10rem) var(--page);
-    color: #292824;
-    font-size: clamp(1rem, 1.25vw, 1.12rem);
-    line-height: 1.85;
+    padding: clamp(4rem, 7vw, 7rem) clamp(1.5rem, 6vw, 7rem);
+    border-right: 1px solid #d3dde6;
+    border-left: 1px solid #d3dde6;
+    background: #f8fafc;
+    color: #263548;
+    font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+    line-height: 1.78;
     counter-reset: article-section;
 }
 
 .article-content::before {
-    content: "FIELD NOTES / SHSHANK SINGH";
+    content: "ENGINEERING CASE STUDY  /  SYSTEM DOCUMENTATION  /  SHSHANK SINGH";
     display: block;
-    margin-bottom: clamp(4rem, 8vw, 7rem);
-    padding-bottom: 1.2rem;
-    border-bottom: 1px solid var(--line-dark);
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    padding: 0.8rem 1rem;
+    border: 1px solid #cbd8e3;
+    border-left: 3px solid var(--cyan);
+    border-radius: 7px;
+    background: #edf4f8;
     color: var(--signal);
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.56rem;
     letter-spacing: 0.12em;
 }
 
 .article-summary {
-    margin-bottom: clamp(4rem, 8vw, 7rem);
-    padding: clamp(1.25rem, 3vw, 2rem);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--white);
+    margin-bottom: clamp(3.5rem, 7vw, 6rem);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid #29415e;
+    border-top: 3px solid var(--cyan);
+    border-radius: 10px;
+    background: var(--navy-2);
+    color: var(--white);
 }
 
 .article-summary > p {
     margin: 0;
-    color: var(--ink);
-    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-    font-weight: 600;
+    color: #dce7f2;
+    font-size: clamp(1.05rem, 1.55vw, 1.3rem);
+    font-weight: 500;
     line-height: 1.5;
 }
 
@@ -196,36 +228,38 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin-top: 1.5rem;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid #29415e;
 }
 
 .article-facts div {
-    padding: 1rem 1rem 0 0;
+    padding: 1.2rem 1rem 0 0;
     display: flex;
     flex-direction: column;
 }
 
 .article-facts strong {
-    font-size: 1.1rem;
+    color: var(--white);
+    font: 600 0.95rem var(--font-mono);
 }
 
 .article-facts span {
     margin-top: .3rem;
-    color: var(--muted);
+    color: #8294aa;
     font: .52rem var(--font-mono);
     text-transform: uppercase;
 }
 
 .article-content h2 {
     position: relative;
-    margin: clamp(4rem, 8vw, 7rem) 0 1.5rem;
+    margin: clamp(4rem, 7vw, 6rem) 0 1.5rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid #cbd8e3;
     color: var(--ink);
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 0.95;
-    text-transform: uppercase;
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
     counter-increment: article-section;
 }
 
@@ -234,13 +268,13 @@
 }
 
 .article-content h2::before {
-    content: "0" counter(article-section);
-    position: absolute;
-    top: 0.45rem;
-    right: calc(100% + clamp(1rem, 4vw, 4rem));
+    content: "SECTION / 0" counter(article-section);
+    position: static;
+    display: block;
+    margin-bottom: 0.85rem;
     color: var(--signal);
     font-family: var(--font-mono);
-    font-size: 0.58rem;
+    font-size: 0.56rem;
     letter-spacing: 0.1em;
 }
 
@@ -248,35 +282,32 @@
     margin: 0 0 1.65rem;
 }
 
-.article-content h2:first-of-type + p::first-letter {
-    float: left;
-    margin: 0.05em 0.12em 0 0;
-    color: var(--signal);
-    font-family: var(--font-display);
-    font-size: 5.2em;
-    line-height: 0.75;
-}
-
 .article-content ul {
     margin: 2.5rem 0 3rem;
     padding: 0;
     list-style: none;
-    border-top: 1px solid var(--line-dark);
+    border: 1px solid #cbd8e3;
+    border-radius: 9px;
+    background: #f0f5f8;
 }
 
 .article-content li {
     position: relative;
     margin: 0;
-    padding: 1.35rem 0 1.35rem 2.2rem;
-    border-bottom: 1px solid var(--line-dark);
+    padding: 1.25rem 1.25rem 1.25rem 3rem;
+    border-bottom: 1px solid #d5e0e8;
 }
 
 .article-content li::before {
-    content: "↳";
+    content: "✓";
     position: absolute;
-    left: 0;
+    left: 1.2rem;
     color: var(--signal);
     font-family: var(--font-mono);
+}
+
+.article-content li:last-child {
+    border-bottom: 0;
 }
 
 .article-content strong {
@@ -286,7 +317,9 @@
 
 .article-content code {
     padding: 0.12em 0.35em;
-    background: rgba(9, 9, 9, 0.07);
+    border: 1px solid #cfdae3;
+    border-radius: 4px;
+    background: #e7eef3;
     font-family: var(--font-mono);
     font-size: 0.83em;
 }
@@ -294,7 +327,8 @@
 .code-sample {
     margin: 2.5rem 0 3.5rem;
     overflow: hidden;
-    border-radius: 12px;
+    border: 1px solid #29415e;
+    border-radius: 10px;
     background: var(--navy);
     color: #c0cede;
 }
@@ -318,7 +352,9 @@
 .article-callout {
     margin: 3rem 0;
     padding: 1.4rem 1.5rem;
-    border-left: 3px solid var(--cyan);
+    border: 1px solid #b9d8e5;
+    border-left: 4px solid var(--cyan);
+    border-radius: 8px;
     background: #e8f3f7;
 }
 
@@ -363,14 +399,13 @@
 }
 
 .article-figure {
-    width: min(74vw, 74rem);
-    margin: clamp(3rem, 7vw, 6rem) 50% clamp(4rem, 8vw, 7rem);
-    transform: translateX(-50%);
+    width: 100%;
+    margin: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 7vw, 6rem);
     overflow: hidden;
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 10px;
     background: var(--white);
-    box-shadow: 0 22px 65px rgba(30, 51, 70, 0.1);
+    box-shadow: 0 16px 45px rgba(30, 51, 70, 0.08);
 }
 
 .article-figure img {
@@ -399,11 +434,11 @@
 }
 
 .article-diagram {
-    width: min(74vw, 74rem);
-    margin: clamp(3rem, 7vw, 6rem) 50% clamp(4rem, 8vw, 7rem);
-    transform: translateX(-50%);
+    width: 100%;
+    margin: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 7vw, 6rem);
     padding: clamp(1.25rem, 4vw, 3rem);
-    border-radius: 14px;
+    border: 1px solid #29415e;
+    border-radius: 10px;
     background: var(--navy);
     color: var(--white);
     box-shadow: 0 22px 65px rgba(30, 51, 70, 0.14);
@@ -458,8 +493,10 @@
     min-width: 15rem;
     margin-top: clamp(3rem, 7vw, 6rem);
     padding: 1rem 1.1rem;
-    border: 1px solid var(--ink);
-    color: var(--ink);
+    border: 1px solid #29415e;
+    border-radius: 7px;
+    background: var(--navy);
+    color: var(--white);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.07em;
@@ -469,8 +506,9 @@
 
 .back-link:hover,
 .back-link:focus-visible {
-    background: var(--ink);
-    color: var(--paper);
+    border-color: var(--cyan);
+    background: var(--cyan);
+    color: var(--navy);
 }
 
 .article-footer {
