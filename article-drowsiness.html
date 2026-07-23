@@ -7,38 +7,22 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        .article-header { text-align: center; margin-bottom: 2rem; padding-top: 120px; }
-        .article-title { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;}
-        .article-content { max-width: 800px; margin: 0 auto; line-height: 1.8; font-size: 1.1rem; color: var(--text-color); padding: 3rem; border-radius: 20px;}
-        .article-content h2 { color: var(--secondary-color); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
-        .article-content p { margin-bottom: 1.5rem; }
-        .article-content ul { margin-bottom: 1.5rem; padding-left: 20px; }
-        .article-content li { margin-bottom: 0.5rem; }
-        .back-link { display: inline-block; margin-top: 2rem; color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: color 0.3s ease;}
-        .back-link:hover { color: var(--secondary-color); text-decoration: underline; }
-    </style>
+    <link rel="stylesheet" href="article.css">
 </head>
-<body>
-    <div class="background-animation">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="index.html" class="logo"><i class="fas fa-arrow-left"></i> Back to Home</a>
-        </div>
+<body class="article-page">
+    <nav class="article-nav">
+        <a class="article-brand" href="index.html"><span class="article-brand-mark">SS</span><span class="article-brand-name">Shshank Singh</span></a>
+        <a class="article-back" href="index.html#work">← All work</a>
     </nav>
-    <section class="section">
+    <main class="article-shell">
         <div class="article-header">
+            <p class="article-kicker">Case file 04 / Computer vision</p>
             <h1 class="article-title">Driver Drowsiness Detection System</h1>
-            <p style="color: var(--text-color); opacity: 0.8; font-size: 1.1rem;">Jan 2025 - Apr 2025</p>
+            <p class="article-date">Jan 2025 — Apr 2025</p>
         </div>
-        <div class="article-content glass-panel">
+        <article class="article-content">
             <h2>Introduction</h2>
             <p>Hello! I'd like to share the details of a computer vision project with real-world safety implications: the Driver Drowsiness Detection System. Personally speaking, I wanted to build AI that doesn't just analyze data, but actively interacts with the physical world to prevent harm. Driver fatigue is a massive, often fatal issue on roads globally, and I saw an opportunity to utilize edge-deployed deep learning as a preventative measure.</p>
 
@@ -60,9 +44,9 @@
             <h2>Final Thoughts</h2>
             <p>Building this system solidified my understanding of deploying ML models outside of cloud environments. It's one thing to train a model in a Google Colab notebook; it's an entirely different challenge to make it run flawlessly in real-time, on low-power hardware, with human safety on the line.</p>
             
-            <a href="index.html#projects" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
-        </div>
-    </section>
-    <script src="script.js"></script>
+            <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
+        </article>
+    </main>
+    <footer class="article-footer"><span>© 2026 Shshank Singh</span><span>Case closed / Signal retained</span></footer>
 </body>
 </html>
