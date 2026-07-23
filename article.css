@@ -22,7 +22,7 @@
     align-items: center;
     justify-content: space-between;
     min-height: 5.5rem;
-    padding: 0 var(--page-pad);
+    padding: 0 var(--page);
     color: var(--paper);
     border-bottom: 1px solid rgba(255,255,255,.13);
 }
@@ -85,7 +85,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 9rem var(--page-pad) clamp(4rem, 8vw, 8rem);
+    padding: 9rem var(--page) clamp(4rem, 8vw, 8rem);
     overflow: hidden;
     background: var(--ink);
     color: var(--paper);
@@ -96,7 +96,7 @@
     content: "";
     position: absolute;
     top: 9rem;
-    right: var(--page-pad);
+    right: var(--page);
     width: clamp(12rem, 29vw, 31rem);
     aspect-ratio: 1;
     border: 1px solid rgba(200, 144, 59, 0.28);
@@ -156,7 +156,7 @@
 .article-content {
     max-width: 54rem;
     margin: 0 auto;
-    padding: clamp(5rem, 10vw, 10rem) var(--page-pad);
+    padding: clamp(5rem, 10vw, 10rem) var(--page);
     color: #292824;
     font-size: clamp(1rem, 1.25vw, 1.12rem);
     line-height: 1.85;
@@ -476,7 +476,7 @@
     display: flex;
     justify-content: space-between;
     gap: 2rem;
-    padding: 2rem var(--page-pad);
+    padding: 2rem var(--page);
     background: var(--ink);
     color: var(--paper-dim);
     font-family: var(--font-mono);
