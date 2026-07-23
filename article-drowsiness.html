@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="article.css">
 </head>
@@ -23,31 +23,72 @@
             <p class="article-date">Jan 2025 — Apr 2025</p>
         </div>
         <article class="article-content">
-            <h2>Introduction</h2>
-            <p>Hello! I'd like to share the details of a computer vision project with real-world safety implications: the Driver Drowsiness Detection System. Personally speaking, I wanted to build AI that doesn't just analyze data, but actively interacts with the physical world to prevent harm. Driver fatigue is a massive, often fatal issue on roads globally, and I saw an opportunity to utilize edge-deployed deep learning as a preventative measure.</p>
+            <div class="article-summary">
+                <p>A browser-based drowsiness classifier supporting uploaded images, sampled video analysis, and a live WebRTC camera pipeline with temporal smoothing and audible warnings.</p>
+                <div class="article-facts">
+                    <div><strong>41,793 images</strong><span>Training dataset reported</span></div>
+                    <div><strong>224 × 224</strong><span>Model input</span></div>
+                    <div><strong>3-frame window</strong><span>Live score smoothing</span></div>
+                </div>
+            </div>
 
-            <h2>The Problem I Wanted to Solve</h2>
-            <p>The danger of driving while exhausted usually manifests in "micro-sleeps"—brief, involuntary moments of unconsciousness. The problem with detecting these is two-fold: First, the detection must be incredibly fast (real-time). A delay of even a few seconds can be fatal. Second, the system must be robust. A car's cabin environment changes drastically: glaring sunlight, pitch-black night, shadows, and varying angles. I needed a model that was both highly accurate under diverse conditions and extremely lightweight.</p>
+            <h2>Problem and product boundary</h2>
+            <p>A frame-level eye classifier is not automatically a drowsiness-detection product. The application must obtain camera data, locate a useful facial region, normalize it for the model, smooth unstable predictions, surface confidence, and create a warning that a driver can notice.</p>
+            <p>This project explores that complete loop. It is an educational prototype rather than a certified safety device, but it deliberately includes the system components surrounding the classifier instead of presenting only a training notebook.</p>
 
-            <h2>How It Works (Under the Hood)</h2>
-            <p>To tackle this, I engineered a real-time detection pipeline based on Convolutional Neural Networks (CNNs):</p>
+            <h2>Model and preprocessing</h2>
+            <p>The repository uses a Keras classifier based on a MobileNetV2 transfer-learning backbone with custom dense layers for binary classification between <em>Drowsy</em> and <em>Alert</em>. MobileNetV2 was chosen because depthwise separable convolutions provide a favourable compute–accuracy trade-off for interactive inference.</p>
             <ul>
-                <li><strong>MobileNetV2 Backbone:</strong> I chose MobileNetV2 because its architecture is specifically designed to maximize accuracy while minimizing computational cost, making it perfect for edge devices.</li>
-                <li><strong>Computer Vision Pipeline:</strong> Using OpenCV, the system continuously captures frames from a camera, isolates the facial region, and specifically tracks the aspect ratio of the driver's eyes.</li>
-                <li><strong>Real-Time Inference:</strong> The CNN evaluates the sequence of frames to determine if the eye closure pattern indicates normal blinking or a dangerous micro-sleep.</li>
+                <li><strong>Face detection:</strong> an OpenCV Haar cascade searches the equalized grayscale frame and selects the largest detected face.</li>
+                <li><strong>Eye-region focus:</strong> a second cascade looks for up to two large eye regions. If eyes are not found, the pipeline falls back to the upper portion of the face; if no face is found, it uses the full frame.</li>
+                <li><strong>Normalization:</strong> the chosen crop is converted to RGB, resized to 224 × 224, scaled to the 0–1 range, and expanded into a model batch.</li>
+                <li><strong>Output interpretation:</strong> both scalar sigmoid and two-score model outputs are supported, making the serving utility tolerant of alternative exported heads.</li>
             </ul>
-            <p>The final system achieved an impressive 94% precision and 92% recall across various testing datasets.</p>
 
             <figure class="article-figure">
                 <img class="model-crop" src="https://raw.githubusercontent.com/levithion/Driver-Drowsiness-Detection/main/model.png" alt="Top portion of the MobileNetV2 model architecture used in the drowsiness detection system">
                 <figcaption><span>FIG 01 / MODEL GRAPH</span><span>MobileNetV2 backbone optimized for edge inference</span></figcaption>
             </figure>
 
-            <h2>Challenges & Learnings</h2>
-            <p>The primary battle was the trade-off between accuracy and latency. High-accuracy models are usually heavy and slow. I spent weeks tuning the MobileNetV2 architecture, implementing quantization, and optimizing the OpenCV processing loop. The goal was to run this on resource-constrained hardware (like a Raspberry Pi inside a dashboard). Eventually, I managed to push the processing latency to under 50ms, allowing a smooth 20+ Frames Per Second (FPS) detection rate without sacrificing reliability.</p>
+            <h2>Three inference modes</h2>
+            <h3>Uploaded image</h3>
+            <p>The simplest path runs the full preprocessing and prediction pipeline once, returning the class and confidence. This is useful for checking model behaviour and debugging crop selection.</p>
+            <h3>Uploaded video</h3>
+            <p>The video analyzer samples every fifteenth frame, processes at most 120 frames, and aggregates the frame classifications with a majority decision. Sampling controls processing cost and makes the hosted application usable without decoding and inferring on every frame.</p>
+            <h3>Live camera</h3>
+            <p><code>streamlit-webrtc</code> obtains frames inside the browser. The processor infers every eighth frame, keeps deques of the three most recent alert and drowsy scores, and compares their rolling averages. That short window reduces the chance that a blink or one poor crop flips the interface state.</p>
 
-            <h2>Final Thoughts</h2>
-            <p>Building this system solidified my understanding of deploying ML models outside of cloud environments. It's one thing to train a model in a Google Colab notebook; it's an entirely different challenge to make it run flawlessly in real-time, on low-power hardware, with human safety on the line.</p>
+            <div class="code-sample">
+                <div class="code-sample-header"><span>app.py / temporal smoothing</span><span>Live WebRTC</span></div>
+                <pre><code>if frame_count % 8 == 0:
+    scores = predict_frame(image)["scores"]
+    recent_alert.append(scores["alert"])
+    recent_drowsy.append(scores["drowsy"])
+
+    alert = sum(recent_alert) / len(recent_alert)
+    drowsy = sum(recent_drowsy) / len(recent_drowsy)
+    prediction = "Drowsy" if drowsy &gt; alert else "Alert"</code></pre>
+            </div>
+
+            <h2>User feedback and warning path</h2>
+            <p>The interface shows the active crop mode, prediction, and confidence. When the smoothed state becomes drowsy, it renders a prominent warning and plays a generated 800 Hz audio tone. The tone is embedded as base64 audio so it survives Streamlit’s periodic refresh cycle without depending on a separate media file.</p>
+
+            <h2>Evaluation and caveats</h2>
+            <p>The repository reports 99.99% training accuracy and 100% test accuracy on its train/test split. Those values should be interpreted cautiously: a safety-relevant vision system also needs subject-independent splits, varied camera positions, difficult lighting, glasses and occlusions, demographic coverage, and field testing. Accuracy on a curated image dataset does not prove road readiness.</p>
+            <p>Haar cascades are lightweight but fragile under extreme pose and lighting. The live hosted demo can also experience limited frame rate because WebRTC plus neural inference competes for free-tier compute. These limitations are stated explicitly rather than hidden behind a single accuracy number.</p>
+
+            <div class="article-callout">
+                <strong>Next engineering step</strong>
+                <p>Benchmark the full pipeline—not only the CNN—across capture latency, face-detection success, inference time, alert delay, false alarms during normal blinking, and performance by environment.</p>
+            </div>
+
+            <h2>What the project demonstrated</h2>
+            <p>The central lesson was that temporal and interface design can be as important as the image model. Crop fallbacks, sampling policy, rolling averages, WebRTC behaviour, and warning delivery determine whether a classifier becomes a coherent real-time application.</p>
+
+            <div class="article-links">
+                <a href="https://driver-drowsiness-detection-system.streamlit.app" target="_blank" rel="noreferrer">Open live application ↗</a>
+                <a href="https://github.com/levithion/Driver-Drowsiness-Detection" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
             
             <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
         </article>

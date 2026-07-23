@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="article.css">
 </head>
@@ -23,18 +23,27 @@
             <p class="article-date">Aug 2025 — Dec 2025</p>
         </div>
         <article class="article-content">
-            <h2>Introduction</h2>
-            <p>Welcome! Let's take a deep dive into computer science fundamentals. Personally speaking, I have a profound appreciation for algorithmic efficiency. While deep learning is flashy, the foundational algorithms that make computing possible are equally fascinating. I set out to build a Context-Aware Huffman Compressor to push the boundaries of standard text compression algorithms.</p>
+            <div class="article-summary">
+                <p>A lossless compressor that replaces one global Huffman codebook with deterministic, context-conditioned trees and a safe escape path for unseen transitions.</p>
+                <div class="article-facts">
+                    <div><strong>Word or character</strong><span>Tokenization modes</span></div>
+                    <div><strong>N-order</strong><span>Configurable context</span></div>
+                    <div><strong>CLI + Streamlit</strong><span>Two product surfaces</span></div>
+                </div>
+            </div>
 
-            <h2>The Problem I Wanted to Solve</h2>
-            <p>Standard Huffman coding is brilliant, but it's blind. It calculates the global frequency of characters in a document and assigns shorter binary codes to the most frequent characters. However, human language is highly contextual. If you see the letter "q", there is an incredibly high probability the next letter is "u". Standard Huffman ignores this context entirely, assigning the same code to "u" whether it follows "q" or "x". I realized that by making the algorithm aware of context, we could squeeze out significantly higher compression ratios.</p>
+            <h2>Why context matters</h2>
+            <p>Standard Huffman coding assigns a variable-length code using global symbol frequencies. It is optimal among prefix codes for that one memoryless distribution, but text is not memoryless. After “q,” the probability of “u” is much higher than its probability across the document; whitespace, punctuation, source code, and repeated phrases all have similarly strong local structure.</p>
+            <p>The project asks whether a codebook conditioned on the previous N tokens can move the practical bit rate closer to conditional entropy. Instead of changing Huffman’s tree construction, it changes the distribution supplied to the tree.</p>
 
-            <h2>How It Works (Under the Hood)</h2>
-            <p>To achieve this, I fundamentally redesigned how the encoding trees are generated:</p>
+            <h2>Compression pipeline</h2>
+            <p>The canonical implementation supports word-level tokenization that preserves whitespace exactly and character-level tokenization for lower-level analysis. It first builds a global frequency map, then a separate frequency map for every observed context tuple.</p>
             <ul>
-                <li><strong>N-Order Markov Model:</strong> Instead of one global frequency table, the system uses an N-order Markov model to look at the preceding characters (the context) to predict the next character.</li>
-                <li><strong>Dynamic Huffman Trees:</strong> The algorithm generates multiple, context-specific Huffman trees. If the preceding character was "q", the system uses a specific tree where "u" is at the very top (meaning it has the shortest possible binary code).</li>
-                <li><strong>Benchmarking Tools:</strong> I built a comprehensive CLI tool and a Streamlit UI to benchmark the entropy. The system dynamically evaluates file sizes, demonstrating how close we can get to the theoretical limits of conditional entropy.</li>
+                <li><strong>Deterministic trees:</strong> ties are broken using symbol values so the decoder can reconstruct exactly the same trees from serialized frequency maps.</li>
+                <li><strong>Context selection:</strong> the previous N tokens select the active codebook for the next symbol.</li>
+                <li><strong>Escape fallback:</strong> when a context has not observed every global token, an <code>&lt;ESC&gt;</code> symbol signals the decoder to read the next symbol from the global tree.</li>
+                <li><strong>Bit packing:</strong> a custom writer packs individual prefix-code bits into bytes instead of storing strings of zeros and ones.</li>
+                <li><strong>Self-contained output:</strong> a four-byte header length, JSON metadata, and raw bitstream allow independent decompression.</li>
             </ul>
 
             <figure class="article-figure">
@@ -42,16 +51,49 @@
                 <figcaption><span>FIG 01 / COMPRESSION PIPELINE</span><span>Context changes the codebook selected for each token</span></figcaption>
             </figure>
 
-            <h2>Challenges & Learnings</h2>
-            <p>The primary challenge was managing the state space. As you increase the Markov order (looking at 2, 3, or 4 preceding characters instead of just 1), the number of required Huffman trees explodes exponentially. This causes severe memory overhead. I had to implement pruning strategies and highly optimized data structures in Python to ensure the compressor ran fast without consuming all available RAM. It was a rigorous exercise in algorithmic complexity and optimization.</p>
+            <h2>The escape-path problem</h2>
+            <p>A context codebook only knows tokens observed after that context in the training text. If the encoder later sees an unseen transition, the decoder needs an unambiguous way to fall back. The implementation inserts a unique escape token into context trees whose vocabulary is a strict subset of the global vocabulary. It does not insert the token when the context already covers everything, because doing so would lengthen codes for a branch that can never be used.</p>
+
+            <div class="code-sample">
+                <div class="code-sample-header"><span>main.py / context fallback rule</span><span>Lossless coding</span></div>
+                <pre><code>def needs_escape(context_vocab, global_vocab):
+    return context_vocab &lt; global_vocab
+
+if token in context_codes:
+    writer.write_bits(context_codes[token])
+else:
+    writer.write_bits(context_codes[escape_token])
+    writer.write_bits(global_codes[token])</code></pre>
+            </div>
+
+            <h2>Decoding and correctness</h2>
+            <p>Decompression reads the header, reconstructs the deterministic global and context trees, and then walks one tree per output token. A fixed-length deque maintains the same context state as the encoder. When the decoder reaches an escape leaf, it switches to the global tree for exactly one token before updating the context window.</p>
+            <p>Because word mode preserves whitespace tokens and the output records the total token count, decompression can reconstruct the original text without inserting or normalizing spaces. That round-trip property is more important than a favourable benchmark: a compressor that cannot reproduce input bytes is not useful.</p>
+
+            <h2>Measurement</h2>
+            <p>The experiment harness compares original byte size, regular Huffman size, context-aware size, compression ratios, encoding throughput, global Shannon entropy, conditional entropy, and actual bits per token. It also reports high-frequency contexts where the conditional codebook saves the most bits relative to the global codebook.</p>
+            <p>The repository’s generated charts show that gains depend heavily on the data distribution. Repetitive text and code-like patterns create strong contexts; heterogeneous or small corpora provide less predictable benefit because the metadata and extra trees carry overhead.</p>
 
             <figure class="article-figure">
                 <img src="assets/projects/huffman-compression.png" alt="Benchmark chart comparing compression ratios for regular and context-aware Huffman coding">
                 <figcaption><span>FIG 02 / BENCHMARK</span><span>Context-aware coding leads across every tested data shape</span></figcaption>
             </figure>
 
-            <h2>Final Thoughts</h2>
-            <p>This project was deeply satisfying. By injecting probabilistic context into a classic algorithm, I managed to improve compression ratios by 15-20% on context-heavy text, reducing the average size by 1.2 bits per token. It stands as a testament to the fact that returning to first principles and questioning standard assumptions can yield incredible results.</p>
+            <h2>Trade-offs</h2>
+            <p>The main cost is state explosion. As order increases, the number of possible contexts and trees can grow rapidly, increasing header size and memory consumption. A higher-order model is therefore not automatically better. Practical deployment would need context pruning, minimum-frequency thresholds, compact binary metadata, and selection of order based on total file size rather than bitstream size alone.</p>
+
+            <div class="article-callout">
+                <strong>What this project taught me</strong>
+                <p>The theoretical improvement from conditional distributions only matters after accounting for the cost of communicating the model. Compression is a systems problem involving algorithms, serialization, determinism, memory, and measurement.</p>
+            </div>
+
+            <h2>Product surfaces</h2>
+            <p>The CLI supports compressing, decompressing, and running built-in experiments. The Streamlit application exposes the same mechanism interactively with text/file input, configurable tokenization and context order, entropy metrics, and analytical charts. Keeping both surfaces tied to the same canonical logic reduces the risk that a demonstration diverges from the actual file format.</p>
+
+            <div class="article-links">
+                <a href="https://context-aware-huffman.streamlit.app" target="_blank" rel="noreferrer">Open live application ↗</a>
+                <a href="https://github.com/levithion/Context-Aware-Huffman" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
             
             <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
         </article>

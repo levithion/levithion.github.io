@@ -122,7 +122,7 @@
 
             <article class="project-feature project-reverse reveal">
                 <div class="project-visual architecture-board" aria-label="Neural collaborative filtering model architecture">
-                    <div class="visual-toolbar"><span>model / NeuMF</span><span>inference graph</span></div>
+                    <div class="visual-toolbar"><span>model / ItemBasedNCF</span><span>inference graph</span></div>
                     <div class="arch-columns">
                         <div class="arch-inputs">
                             <div class="arch-node"><small>INPUT</small><strong>User ID</strong><span>[batch]</span></div>
@@ -131,9 +131,9 @@
                         <div class="arch-arrow">→</div>
                         <div class="arch-branches">
                             <div class="arch-branch">
-                                <small>LINEAR PATH</small>
-                                <strong>GMF</strong>
-                                <span>user × item</span>
+                                <small>LATENT INPUT</small>
+                                <strong>128D</strong>
+                                <span>user + movie</span>
                             </div>
                             <div class="arch-branch">
                                 <small>NON-LINEAR PATH</small>
@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="arch-arrow">→</div>
-                        <div class="arch-output"><small>FUSION</small><strong>NeuMF</strong><span>ranking score</span></div>
+                        <div class="arch-output"><small>OUTPUT + BIASES</small><strong>0.5–5.0</strong><span>predicted rating</span></div>
                     </div>
                     <div class="tensor-readout">
                         <span>loss: binary_cross_entropy</span>
@@ -153,14 +153,14 @@
                 <div class="project-copy">
                     <div class="project-meta"><span>02</span><span>Deep recommendation</span><span>2025</span></div>
                     <h3>Neural Movie Recommender</h3>
-                    <p class="project-lede">A hybrid NeuMF model that learns both linear and non-linear user–movie interactions.</p>
-                    <p>Trained on MovieLens ratings, exported as a production model, served through a REST backend, and connected to an interactive recommendation interface.</p>
+                    <p class="project-lede">A neural collaborative-filtering model that learns non-linear user–movie interactions from latent embeddings.</p>
+                    <p>The repository implementation concatenates 64-dimensional user and movie embeddings, passes them through a 128→64→32 MLP, adds learned user/movie/global biases, and serves ranked predictions through FastAPI.</p>
                     <div class="metrics">
                         <div><strong>100K</strong><span>ratings</span></div>
                         <div><strong>9K</strong><span>movies</span></div>
                         <div><strong>600</strong><span>users</span></div>
                     </div>
-                    <div class="tags"><span>PyTorch</span><span>NeuMF</span><span>FastAPI</span><span>Plotly</span></div>
+                    <div class="tags"><span>PyTorch</span><span>Neural CF</span><span>FastAPI</span><span>Plotly</span></div>
                     <div class="project-links">
                         <a href="article-ncf-recommender.html">Technical case study →</a>
                         <a href="https://ncf-based-movie-recommender-system.streamlit.app" target="_blank" rel="noreferrer">Live demo ↗</a>
@@ -200,13 +200,13 @@
                             <div class="face-box"><span>EYE STATE</span><strong>ALERT</strong></div>
                             <div class="scan-line"></div>
                         </div>
-                        <div class="vision-readout"><span>mobilenet_v2</span><span>20+ FPS</span><span>49.2 ms</span></div>
+                        <div class="vision-readout"><span>mobilenet_v2</span><span>rolling score</span><span>224 × 224</span></div>
                     </div>
                     <div class="project-card-body">
                         <div class="project-meta"><span>04</span><span>Computer vision</span></div>
                         <h3>Driver Drowsiness Detection</h3>
                         <p>Edge-optimized CNN inference for identifying micro-sleep indicators under changing light conditions.</p>
-                        <div class="metric-line"><span><strong>94%</strong> precision</span><span><strong>92%</strong> recall</span><span><strong>&lt;50ms</strong> latency</span></div>
+                        <div class="metric-line"><span><strong>41,793</strong> images</span><span><strong>224px</strong> input</span><span><strong>2-class</strong> output</span></div>
                         <div class="project-links"><a href="article-drowsiness.html">Case study →</a><a href="https://github.com/levithion/Driver-Drowsiness-Detection" target="_blank" rel="noreferrer">Source ↗</a></div>
                     </div>
                 </article>
@@ -262,7 +262,7 @@
                 </div>
                 <div class="experience-output">
                     <span>OUTPUT</span>
-                    <strong>NeuMF model</strong>
+                    <strong>Neural CF model</strong>
                     <strong>REST inference API</strong>
                     <strong>Interactive dashboard</strong>
                 </div>

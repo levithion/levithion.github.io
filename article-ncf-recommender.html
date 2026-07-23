@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="article.css">
 </head>
@@ -24,35 +24,74 @@
             <p class="article-date">May 2025 — Jul 2025</p>
         </div>
         <article class="article-content">
-            <h2>Introduction</h2>
-            <p>Hey there! Let me walk you through one of my favorite projects: a Neural Collaborative Filtering (NCF) Movie Recommender. Recommendations silently rule our digital lives, from the songs we stream to the products we buy. Personally speaking, I wanted to understand the magic behind these systems and build one myself from scratch. So, I set out to create a robust, deep learning-based engine that recommends movies you're actually going to love.</p>
-
-            <h2>The Problem I Wanted to Solve</h2>
-            <p>If you look at traditional recommendation systems, many rely on a technique called Matrix Factorization. It basically maps users and items to a shared latent space. While it's mathematically elegant, it has a glaring limitation: it assumes all relationships are strictly linear. But human taste isn't linear! Why someone likes both "The Matrix" and "Pride and Prejudice" might involve complex, subtle, and non-linear patterns. I needed an architecture that could capture these deep, hidden intricacies that standard algorithms simply miss.</p>
-
-            <h2>How It Works (Under the Hood)</h2>
-            <p>To solve this, I designed a hybrid model known as <strong>NeuMF</strong> (Neural Matrix Factorization), blending two powerful approaches:</p>
-            <ul>
-                <li><strong>Generalized Matrix Factorization (GMF):</strong> This component handles the linear interactions, serving as a strong, reliable baseline.</li>
-                <li><strong>Multi-Layer Perceptron (MLP):</strong> This deep neural network structure takes user and item embeddings and learns the complex, non-linear interactions between them.</li>
-            </ul>
-            <p>By fusing these together in <strong>PyTorch</strong>, the model achieved a far more nuanced understanding of user preferences. But I didn't want this to just sit in a Jupyter notebook. I engineered a <strong>FastAPI</strong> backend to serve live predictions and wrapped it in an interactive <strong>Streamlit</strong> and <strong>Plotly</strong> dashboard. This meant users could interact with the model in real time, tweaking inputs and watching the recommendations adapt instantly.</p>
-
-            <div class="article-diagram" role="img" aria-label="NeuMF inference architecture from identifiers through embeddings, GMF and MLP branches, to a ranking score">
-                <div class="article-diagram-label"><span>FIG 01 / NEUMF INFERENCE GRAPH</span><span>GMF + MLP</span></div>
-                <div class="diagram-flow">
-                    <div><small>INPUT</small><strong>User + Movie IDs</strong><span>integer tensors</span></div>
-                    <div><small>REPRESENTATION</small><strong>Embeddings</strong><span>learned latent vectors</span></div>
-                    <div><small>DUAL PATH</small><strong>GMF / MLP</strong><span>linear + non-linear</span></div>
-                    <div><small>OUTPUT</small><strong>Ranking Score</strong><span>recommendation probability</span></div>
+            <div class="article-summary">
+                <p>An end-to-end movie recommendation product built around learned user and item embeddings, a non-linear rating model, a FastAPI inference layer, and a Streamlit client.</p>
+                <div class="article-facts">
+                    <div><strong>100K ratings</strong><span>MovieLens interactions</span></div>
+                    <div><strong>64 dimensions</strong><span>User and movie embeddings</span></div>
+                    <div><strong>128 → 64 → 32</strong><span>Prediction network</span></div>
                 </div>
             </div>
 
-            <h2>Challenges & Learnings</h2>
-            <p>The hardest part of this project was balancing the GMF and MLP branches during training. They converge at different rates, and fine-tuning the hyperparameters (like embedding sizes and learning rates) required a lot of methodical experimentation. Another significant challenge was ensuring the inference latency remained low when deployed, so the real-time Streamlit dashboard felt snappy and responsive.</p>
+            <h2>Problem and scope</h2>
+            <p>A recommender must estimate preference from sparse observations. Each person rates only a small fraction of the catalogue, so a simple lookup table cannot generalize to unseen user–movie pairs. The goal was to learn compact representations of users and movies, use those representations to estimate ratings, and build a service that could rank unseen titles for a selected user.</p>
+            <p>The project uses the MovieLens small dataset: roughly 100,000 ratings from 600 users across approximately 9,000 movies. That scale is large enough to expose sparse-interaction problems while remaining practical for repeatable training and local experimentation.</p>
 
-            <h2>Final Thoughts</h2>
-            <p>This project was a massive leap for me. It bridged the gap between raw AI research and a living, breathing software product. Seeing the model successfully suggest a movie that perfectly matched a complex user profile was incredibly rewarding, and it proved to me the power of deep learning in personalization.</p>
+            <h2>Model architecture</h2>
+            <p>The production repository implements an <code>ItemBasedNCF</code> model in PyTorch. It is important to describe the actual implementation precisely: user and movie IDs are mapped to separate 64-dimensional embeddings, concatenated into a 128-dimensional vector, and processed by a multilayer perceptron. The current serving model does not contain a separate GMF branch.</p>
+            <ul>
+                <li><strong>Learned representations:</strong> independent embedding tables capture latent factors for users and movies.</li>
+                <li><strong>Non-linear interaction:</strong> dense layers of 128, 64, and 32 units use ReLU activations, batch normalization, and 0.3 dropout.</li>
+                <li><strong>Bias correction:</strong> learned user, movie, and global bias terms capture systematic rating tendencies outside the interaction network.</li>
+                <li><strong>Bounded output:</strong> the final estimate is clamped to the valid MovieLens rating range of 0.5 to 5.0.</li>
+            </ul>
+
+            <div class="article-diagram" role="img" aria-label="Neural collaborative filtering architecture from user and movie identifiers through embeddings and an MLP to a predicted rating">
+                <div class="article-diagram-label"><span>FIG 01 / ITEM-BASED NCF GRAPH</span><span>PyTorch inference</span></div>
+                <div class="diagram-flow">
+                    <div><small>INPUT</small><strong>User + Movie IDs</strong><span>integer tensors</span></div>
+                    <div><small>REPRESENTATION</small><strong>64D + 64D</strong><span>latent embeddings</span></div>
+                    <div><small>INTERACTION</small><strong>128 → 64 → 32</strong><span>MLP + normalization</span></div>
+                    <div><small>OUTPUT</small><strong>Predicted Rating</strong><span>network + learned biases</span></div>
+                </div>
+            </div>
+
+            <h2>Recommendation generation</h2>
+            <p>At startup, the backend reconstructs stable mappings between the original MovieLens identifiers and contiguous embedding indices. It loads the trained <code>.pth</code> weights onto MPS, CUDA, or CPU, then switches the network to evaluation mode.</p>
+            <p>For a recommendation request, the handler first removes movies the user has already rated. It scores every remaining movie under <code>torch.no_grad()</code>, sorts the predictions from highest to lowest, and enriches the top results with title and genre metadata. This produces recommendations that are both ranked and immediately displayable.</p>
+
+            <div class="code-sample">
+                <div class="code-sample-header"><span>model_handler.py / ranking loop</span><span>PyTorch</span></div>
+                <pre><code>unrated_movies = all_movies - user_movies
+with torch.no_grad():
+    for movie_id in unrated_movies:
+        predicted = model(user_tensor, movie_tensor).item()
+        predictions.append((movie_id, predicted))
+
+predictions.sort(key=lambda item: item[1], reverse=True)
+top_recommendations = predictions[:top_k]</code></pre>
+            </div>
+
+            <h2>API and interface</h2>
+            <p>The FastAPI layer separates model concerns from the user interface. It exposes health status, movie and user lists, recommendation generation, and user rating history. Pydantic response models keep the contract explicit: each recommendation includes a movie identifier, title, genres, and predicted rating.</p>
+            <p>The Streamlit application consumes those endpoints rather than loading the model directly. Users can choose a profile, inspect rating history, request Top-K recommendations, and explore the predicted output without interacting with notebooks or Python objects.</p>
+
+            <div class="article-callout">
+                <strong>Engineering trade-off</strong>
+                <p>The current ranker scores unrated movies one at a time. This is clear and correct for a small catalogue, but batching candidate tensors would reduce Python overhead and become necessary at a larger scale.</p>
+            </div>
+
+            <h2>Evaluation and limitations</h2>
+            <p>Offline recommendation quality should be evaluated with a held-out interaction split using metrics aligned to the product goal—for example RMSE for rating estimation and Hit Rate or NDCG for Top-K ranking. The repository demonstrates the complete serving path, but the portfolio deliberately avoids inventing evaluation values that are not recorded in the source.</p>
+            <p>The system is also limited to known users and known movies. A new user has no learned embedding, producing a classic cold-start problem. Practical next steps would add popularity or content-based fallbacks, batch candidate scoring, persistent writes for new ratings, and model-version metadata in the health response.</p>
+
+            <h2>What the project demonstrated</h2>
+            <p>This project connected four usually separate tasks: preparing interaction data, training a latent model, serving deterministic inference, and designing an interface around the recommendations. The most valuable outcome was understanding that a recommender is not only a network—it is also identifier mapping, candidate filtering, metadata enrichment, API contracts, and a plan for cold-start behavior.</p>
+
+            <div class="article-links">
+                <a href="https://ncf-based-movie-recommender-system.streamlit.app" target="_blank" rel="noreferrer">Open live application ↗</a>
+                <a href="https://github.com/levithion/NCF-Based-Movie-Recommender-System" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
             
             <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
         </article>

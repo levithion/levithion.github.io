@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="article.css">
 </head>
@@ -23,20 +23,32 @@
             <p class="article-date">2025 / Meaning-aware discovery</p>
         </div>
         <article class="article-content">
-            <h2>Introduction</h2>
-            <p>Welcome! I want to share the story behind my Query-Based Book Recommendation System. Personally speaking, I am an avid reader, but I constantly found myself struggling to find a book based on a specific "vibe" or abstract concept. I wanted to build a semantic search platform that allows people to describe what they want to read in plain English, and instantly get the perfect recommendation.</p>
+            <div class="article-summary">
+                <p>A semantic search application that converts natural-language reading intent into ranked books using precomputed description embeddings and cosine similarity.</p>
+                <div class="article-facts">
+                    <div><strong>~5,200 books</strong><span>Clean descriptions</span></div>
+                    <div><strong>384 dimensions</strong><span>MiniLM embeddings</span></div>
+                    <div><strong>1–20 results</strong><span>Configurable Top-K</span></div>
+                </div>
+            </div>
 
-            <h2>The Problem I Wanted to Solve</h2>
-            <p>Traditional keyword-based search is fundamentally broken for creative discovery. If you search a library database for "a story about isolation in deep space," standard search engines look for those exact keywords. But what if the best matching book's blurb says "a lone astronaut adrift in the cosmos"? The meaning is identical, but the words are entirely different. I needed a system that understands <em>semantics</em> (meaning) rather than just syntax (spelling).</p>
+            <h2>Problem and search behaviour</h2>
+            <p>Readers often remember a theme rather than a title: “a mystery in a small town,” “philosophy for someone new to the subject,” or “isolation in deep space.” Keyword search is brittle in this setting because the words in the query may never appear in a book’s description even when the meaning matches.</p>
+            <p>The project treats discovery as semantic retrieval. The query and every book description are encoded with the same sentence model, allowing the system to compare meaning in a shared vector space rather than count overlapping terms.</p>
 
-            <h2>How It Works (Under the Hood)</h2>
-            <p>To bridge this semantic gap, I leveraged <strong>Sentence Transformers</strong>, specifically the <code>all-MiniLM-L6-v2</code> model. Here is the step-by-step flow:</p>
+            <h2>Dataset preparation</h2>
+            <p>The source dataset contains roughly 7,000 records with titles, authors, descriptions, categories, cover URLs, publication years, ratings, and other metadata. Records without usable descriptions are removed, leaving approximately 5,200 entries for retrieval.</p>
+            <p>Embedding generation is deliberately separated from the interactive application. A preparation script loads <code>all-MiniLM-L6-v2</code>, encodes every description with a progress bar, and saves the resulting matrix as <code>book_embeddings.npy</code>. The cleaned dataframe is saved alongside it. This turns a repeated model workload into a one-time indexing step.</p>
+
+            <h2>Retrieval pipeline</h2>
             <ul>
-                <li><strong>Vectorization:</strong> I pre-computed high-dimensional vector embeddings for the summaries and metadata of over 7,000 books. In this mathematical space, books with similar themes are located closer together.</li>
-                <li><strong>Query Processing:</strong> When a user types a natural-language query, the system converts their sentence into the exact same vector space.</li>
-                <li><strong>Retrieval:</strong> Using <strong>Cosine Similarity</strong>, the system calculates the angle between the user's query vector and all the book vectors. The closest vectors represent the best semantic matches.</li>
+                <li><strong>Load:</strong> Streamlit caches the sentence model as a resource and the dataframe/embedding matrix as data.</li>
+                <li><strong>Encode:</strong> only the incoming user query is encoded during interaction.</li>
+                <li><strong>Compare:</strong> scikit-learn computes cosine similarity between the query vector and the complete embedding matrix.</li>
+                <li><strong>Filter:</strong> an optional category filter narrows the candidate dataframe after similarity scores are attached.</li>
+                <li><strong>Rank:</strong> candidates are sorted descending by similarity and truncated to the requested Top-K.</li>
+                <li><strong>Present:</strong> results show cover art, title, author, rating, year, category, score, and an expandable description.</li>
             </ul>
-            <p>I wrapped all of this logic into a sleek, interactive frontend using <strong>Streamlit</strong> and deployed it on the Streamlit Community Cloud so anyone could access it from their browser.</p>
 
             <div class="article-diagram" role="img" aria-label="Semantic book retrieval pipeline from query through MiniLM embedding and cosine similarity to ranked books">
                 <div class="article-diagram-label"><span>FIG 01 / RETRIEVAL PIPELINE</span><span>all-MiniLM-L6-v2</span></div>
@@ -48,11 +60,44 @@
                 </div>
             </div>
 
-            <h2>Challenges & Learnings</h2>
-            <p>Working with vector embeddings at scale introduces interesting performance challenges. Calculating cosine similarity across 7,000+ high-dimensional vectors on the fly can become a bottleneck. I spent a significant amount of time optimizing the tensor operations in PyTorch and caching the embeddings to ensure the search felt instantaneous to the user. It taught me a lot about memory management and computational efficiency in Python.</p>
+            <div class="code-sample">
+                <div class="code-sample-header"><span>app.py / query-time retrieval</span><span>Sentence Transformers</span></div>
+                <pre><code>query_embedding = model.encode([query])
+similarities = cosine_similarity(
+    query_embedding,
+    book_embeddings
+)[0]
 
-            <h2>Final Thoughts</h2>
-            <p>This project successfully proved to me how accessible and powerful modern NLP tools have become. Transforming a vague feeling into a concrete book recommendation feels a bit like magic, and it's a testament to the capabilities of retrieval-augmented generation (RAG) concepts when applied to search.</p>
+df["similarity"] = similarities
+top_books = filtered_df.sort_values(
+    "similarity", ascending=False
+).head(top_k)</code></pre>
+            </div>
+
+            <h2>Why precompute embeddings</h2>
+            <p>Encoding every book description on every interaction would make response time proportional to both corpus size and transformer inference cost. Precomputation changes the query path to one transformer call plus matrix similarity. At this corpus size, brute-force cosine similarity is simple, transparent, and fast enough while preserving exact ranking.</p>
+            <p>The trade-off is index freshness. When descriptions change or books are added, the embedding file must be regenerated. A larger or frequently changing catalogue would benefit from a vector database, incremental indexing, and versioned embeddings.</p>
+
+            <h2>Interface decisions</h2>
+            <p>The sidebar exposes Top-K and a curated category filter. Results are presented as metadata-rich rows rather than only a list of titles. Displaying the similarity score is useful for debugging and demonstration, although a consumer-facing product might hide it or translate it into a less technical relevance explanation.</p>
+            <p>Cover images are loaded from dataset URLs, while missing covers fall back to a placeholder. Descriptions are collapsed by default so the user can scan multiple recommendations without facing a wall of text.</p>
+
+            <h2>Evaluation and limitations</h2>
+            <p>Cosine similarity provides a ranking but does not establish that the recommendations are useful. A robust evaluation set would pair realistic queries with human relevance labels and report Precision@K, Recall@K, NDCG, and qualitative failure categories.</p>
+            <p>The model only sees descriptions, so it may miss signals contained in reviews, series information, audience, writing style, or reader behaviour. Category filtering is implemented as substring matching, which is convenient but not a formal taxonomy. The project is semantic search rather than collaborative recommendation, and the article uses that distinction deliberately.</p>
+
+            <div class="article-callout">
+                <strong>Most important lesson</strong>
+                <p>For small corpora, the simplest retrieval architecture can be the best one. Precomputed embeddings plus exact cosine similarity made the system easy to inspect, test, and explain before introducing approximate indexes.</p>
+            </div>
+
+            <h2>Next steps</h2>
+            <p>A stronger version would add a labelled query set, hybrid lexical/vector retrieval, diversity-aware reranking, query history, embedding-version checks, and filters driven by normalized metadata. Moving the matrix into Qdrant or another ANN service would become valuable once corpus size or update frequency justifies the added operational complexity.</p>
+
+            <div class="article-links">
+                <a href="https://query-based-book-recommender-system.streamlit.app" target="_blank" rel="noreferrer">Open live application ↗</a>
+                <a href="https://github.com/levithion/Query-Based-Book-Recommender-System-Using-Sentence-Transformers" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
             
             <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
         </article>

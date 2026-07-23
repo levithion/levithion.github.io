@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="article.css">
 </head>
@@ -23,18 +23,32 @@
             <p class="article-date">Sep 2024 — Oct 2024</p>
         </div>
         <article class="article-content">
-            <h2>Introduction</h2>
-            <p>Welcome! Let me tell you about Thalassa, an AI-driven mental health platform. Personally speaking, I believe technology should foster empathy, not just efficiency. Access to therapy and mental health support can be restricted by cost, time, and stigma. I wanted to build a persistent, safe, and emotionally intelligent digital companion that people could turn to whenever they felt overwhelmed.</p>
+            <div class="article-summary">
+                <p>A full-stack wellness application combining authenticated LLM chat, persisted conversation history, mood records, private journal entries, and a curated resource library.</p>
+                <div class="article-facts">
+                    <div><strong>LLaMA 3.1 8B</strong><span>Groq-hosted model</span></div>
+                    <div><strong>Last 10 messages</strong><span>Conversation context</span></div>
+                    <div><strong>5 data models</strong><span>SQLAlchemy persistence</span></div>
+                </div>
+            </div>
 
-            <h2>The Problem I Wanted to Solve</h2>
-            <p>Most standard chatbots are transactional—you ask a question, you get an answer, and the bot instantly forgets you exist. For mental health support, that amnesia is a dealbreaker. To be effective, a companion needs <em>memory</em>. It needs to remember what you talked about last week, track your mood trends, and provide a continuous, private space for reflection. The challenge was combining the conversational power of modern LLMs with robust state management and privacy infrastructure.</p>
+            <h2>Problem and responsibility</h2>
+            <p>Thalassa began as an exploration of stateful conversational interfaces. A useful wellness application needs more than a single prompt box: people need authentication, continuity, a private place to write, and a way to see patterns over time.</p>
+            <p>The project is explicitly an AI demonstration, not therapy, diagnosis, or crisis care. That boundary matters because empathetic language can make a system appear more capable and authoritative than it is. The application therefore combines supportive prompt guidance with a resource library and a visible disclaimer.</p>
 
-            <h2>How It Works (Under the Hood)</h2>
-            <p>Thalassa is a full-stack application built around human-centric design:</p>
+            <figure class="article-figure">
+                <img src="assets/projects/thalassa-login.png" alt="Real screenshot of the deployed Thalassa login interface">
+                <figcaption><span>FIG 01 / LIVE APPLICATION</span><span>Authentication entry point captured from the deployed product</span></figcaption>
+            </figure>
+
+            <h2>Application architecture</h2>
+            <p>The backend is a Flask application with CORS, SQLAlchemy, Flask-JWT-Extended, and separate blueprints for users, moods, resources, and journals. The frontend consists of HTML/CSS and JavaScript views for login, registration, chat, journaling, mood tracking, and resources.</p>
             <ul>
-                <li><strong>The Intelligence:</strong> I utilized the Groq API to power the application with Meta's LLaMA 3.1. I meticulously engineered the system prompts to ensure the AI maintained a supportive, non-judgmental, and appropriately boundary-aware persona.</li>
-                <li><strong>The Backend Engine:</strong> I architected a Flask and SQLite backend. This allowed me to implement persistent conversational memory, meaning Thalassa remembers past interactions and builds on them over time.</li>
-                <li><strong>Security & Tracking:</strong> Because mental health data is deeply personal, I integrated strict JWT-secured authentication. I also built a private journaling system and a mood-tracking analytics dashboard using Chart.js, allowing users to visualize their emotional state over weeks and months.</li>
+                <li><strong>User:</strong> stores credentials and owns all private records.</li>
+                <li><strong>ChatMessage:</strong> persists user and assistant messages with roles and timestamps.</li>
+                <li><strong>Mood:</strong> records a numeric or categorical emotional state over time for visualization.</li>
+                <li><strong>JournalEntry:</strong> stores timestamped private writing associated with one authenticated user.</li>
+                <li><strong>Resource:</strong> contains seeded grounding, breathing, and educational material.</li>
             </ul>
 
             <div class="article-diagram" role="img" aria-label="Thalassa system flow from authenticated client through Flask orchestration and LLaMA to persistent memory">
@@ -47,11 +61,47 @@
                 </div>
             </div>
 
-            <h2>Challenges & Learnings</h2>
-            <p>The most delicate part of this project was prompt engineering and conversational flow. An LLM can easily generate generic advice, but tuning it to sound genuinely empathetic and helpful—without trying to practice unlicensed medicine—took significant iteration. From a technical standpoint, managing the context window limit of the LLM while retaining long-term memory required implementing clever summarization and retrieval techniques in the backend.</p>
+            <h2>Conversation flow</h2>
+            <p>The chat endpoint requires a valid JWT, resolves the current user, persists the incoming message, and loads the ten most recent messages in chronological order. It then prepends a system prompt that asks the model to be patient, validating, non-judgmental, and concise, with an instruction to encourage professional support when severe crisis language appears.</p>
+            <p>The message array is sent to <code>llama-3.1-8b-instant</code> through the Groq client with temperature 0.7 and a 1,024-token output limit. The assistant reply is stored before it is returned, so page reloads can recover the conversation history.</p>
 
-            <h2>Final Thoughts</h2>
-            <p>Thalassa was more than just a coding exercise; it was an exploration into human-computer interaction. Building a tool designed to bring comfort and insight to users taught me how to handle sensitive data responsibly and highlighted the immense potential for AI in the wellness space.</p>
+            <div class="code-sample">
+                <div class="code-sample-header"><span>app.py / context assembly</span><span>Authenticated LLM request</span></div>
+                <pre><code>recent = ChatMessage.query.filter_by(
+    user_id=user.id
+).order_by(
+    ChatMessage.timestamp.desc()
+).limit(10).all()
+
+messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+messages.extend(
+    {"role": item.role, "content": item.content}
+    for item in reversed(recent)
+)</code></pre>
+            </div>
+
+            <h2>Journaling and mood data</h2>
+            <p>The journal blueprint supports authenticated creation and retrieval of entries, ordered by timestamp. The mood routes follow the same ownership model: records are linked to the JWT identity and returned as a personal history. Chart.js turns that history into a time-series view in the browser.</p>
+            <p>These features do not feed directly into the LLM prompt in the current implementation. Keeping that distinction clear prevents the portfolio from claiming a level of memory or personalization that the source does not yet implement.</p>
+
+            <h2>Security and privacy review</h2>
+            <p>JWT protection and per-user database relationships establish a useful baseline, but sensitive wellness data requires a much higher production standard. The development configuration falls back to a default JWT secret when an environment variable is missing; production must refuse startup instead. SQLite data is not encrypted at the application layer, and the project does not yet include audit logs, retention controls, export/deletion workflows, rate limiting, or a formal threat model.</p>
+
+            <div class="article-callout">
+                <strong>Safety boundary</strong>
+                <p>Prompt instructions are not a clinical safety system. A production wellness product would need expert-reviewed crisis handling, deterministic escalation rules, abuse testing, regional resources, privacy review, and continuous monitoring.</p>
+            </div>
+
+            <h2>Interface and deployment</h2>
+            <p>The deployed PythonAnywhere application uses a calm, low-contrast visual system intended to reduce cognitive load. Authentication gates the private views, while AJAX requests carry the JWT to the API. Flask serves both the frontend templates and JSON endpoints, which keeps deployment simple for a compact full-stack project.</p>
+
+            <h2>Next steps</h2>
+            <p>A stronger architecture would add secure secret enforcement, password reset and account deletion, encrypted storage, structured safety classifiers outside the generative model, summarized long-term memory with explicit user control, and test coverage for authorization boundaries. Mood and journal signals should only influence chat after informed consent and clear privacy controls.</p>
+
+            <div class="article-links">
+                <a href="https://levithin.pythonanywhere.com" target="_blank" rel="noreferrer">Open live application ↗</a>
+                <a href="https://github.com/levithion/Depressed-Person-Chatbot" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
             
             <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
         </article>

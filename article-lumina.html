@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=DM+Sans:wght@300;400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="article.css">
 </head>
@@ -23,31 +23,70 @@
             <p class="article-date">Feb 2026 — Mar 2026</p>
         </div>
         <article class="article-content">
-            <h2>Introduction</h2>
-            <p>Hey there! I want to talk to you about Lumina, my distributed multimodal semantic search engine. Personally speaking, the boundary between text and images has always fascinated me. We process the world visually, but we communicate primarily through language. I built Lumina to bridge that gap—allowing users to search through massive datasets of images using natural, descriptive language.</p>
+            <div class="article-summary">
+                <p>Lumina is an end-to-end multimodal retrieval system that indexes 8,092 images and retrieves them from natural-language descriptions without manually authored tags.</p>
+                <div class="article-facts">
+                    <div><strong>8,092</strong><span>Indexed images</span></div>
+                    <div><strong>512 dimensions</strong><span>CLIP embedding space</span></div>
+                    <div><strong>FastAPI + Qdrant</strong><span>Serving and retrieval</span></div>
+                </div>
+            </div>
 
-            <h2>The Problem I Wanted to Solve</h2>
-            <p>Imagine you have a library of 8,000+ photos. If you want to find "a dog running on the beach at sunset," traditional image search requires that someone meticulously tagged that photo with those exact words beforehand. This manual tagging is unscalable and highly subjective. I wanted a system that could "look" at the images, understand their content, and instantly match them to text queries without relying on pre-existing metadata.</p>
+            <h2>Problem and objective</h2>
+            <p>Conventional image search usually depends on filenames, captions, or manually maintained tags. That works when a collection is small and carefully curated, but it breaks down when thousands of images arrive without consistent metadata. A query such as “a tall building at sunset” may describe the content perfectly while sharing no literal words with the stored filename.</p>
+            <p>The objective of Lumina was to make visual content searchable by meaning. The system needed to encode images once, accept open-ended text at query time, retrieve the nearest visual matches, and expose the result through both an API and a usable interface.</p>
 
-            <h2>How It Works (Under the Hood)</h2>
-            <p>Lumina relies on some incredible deep learning architecture:</p>
+            <h2>System architecture</h2>
+            <p>I separated Lumina into ingestion, storage, retrieval, and presentation concerns. This prevents the expensive image-encoding stage from being coupled to every search request.</p>
             <ul>
-                <li><strong>CLIP (Contrastive Language-Image Pre-Training):</strong> I utilized OpenAI's CLIP-VIT-B-32 model. CLIP is uniquely trained to project both text and images into the <em>exact same</em> mathematical vector space. This means the vector for the text "a cat" is located right next to the vector representing a picture of a cat.</li>
-                <li><strong>Qdrant Vector Database:</strong> To handle the 8,000+ image vectors, I deployed Qdrant. It's incredibly fast at performing nearest-neighbor searches in high-dimensional spaces.</li>
-                <li><strong>FastAPI & MPS Acceleration:</strong> I built the ingestion backend using FastAPI. To speed up the heavy lifting of generating embeddings, I engineered the system to utilize Apple's MPS (Metal Performance Shaders) for hardware acceleration.</li>
+                <li><strong>Ingestion pipeline:</strong> loads JPEG and PNG files, encodes each image with <code>clip-ViT-B-32</code>, attaches file-path and timestamp metadata, and upserts points into Qdrant in batches.</li>
+                <li><strong>Vector storage:</strong> Qdrant stores the 512-dimensional image vectors in the <code>lumina_multimodal</code> collection together with payload metadata.</li>
+                <li><strong>Query service:</strong> FastAPI validates a text query and result limit, encodes the text through the same CLIP model, and asks Qdrant for the closest points.</li>
+                <li><strong>Interface:</strong> Streamlit caches the model and database client, exposes a Top-K control, and renders results in a three-column grid with similarity scores.</li>
             </ul>
-            <p>When you type a query, the FastAPI backend uses CLIP to turn your text into a vector, asks Qdrant for the closest image vectors, and serves the results back to a streamlined Streamlit dashboard.</p>
 
             <figure class="article-figure">
                 <img src="assets/projects/lumina-architecture.png" alt="Lumina architecture showing the frontend, FastAPI backend, CLIP encoders, image ingestion pipeline, and Qdrant vector database">
                 <figcaption><span>FIG 01 / SYSTEM ARCHITECTURE</span><span>Query and ingestion paths are independently scalable</span></figcaption>
             </figure>
 
-            <h2>Challenges & Learnings</h2>
-            <p>Scaling up to 8,000+ images isn't just a matter of running a loop. My initial ingestion scripts kept timing out or crashing due to memory limits. I had to learn how to implement robust batch upserts, carefully chunking the data and monitoring the API health during the massive upload process. Getting the MPS acceleration properly configured for PyTorch on Mac architecture was also a steep, but very rewarding, learning curve.</p>
+            <h2>Why CLIP works here</h2>
+            <p>CLIP is trained so that related images and text occupy nearby regions of one embedding space. During ingestion, an image becomes a vector. During search, the user’s sentence becomes another vector of the same dimensionality. Qdrant can therefore rank images using vector similarity even though the query and stored object are different modalities.</p>
+            <p>This is the key design advantage: the system does not attempt to generate a caption for every image or perform keyword matching. It directly compares learned representations. New queries do not require re-indexing because the image vectors are stable.</p>
 
-            <h2>Final Thoughts</h2>
-            <p>Lumina is a project I am incredibly proud of. It shifted my perspective from building standalone ML scripts to architecting scalable, distributed systems. Being able to type a complex sentence and instantly watch the system pull up the exact image I was imagining still feels like science fiction.</p>
+            <div class="code-sample">
+                <div class="code-sample-header"><span>app.py / search endpoint</span><span>FastAPI</span></div>
+                <pre><code>vector = model.encode(request.query).tolist()
+response = client.query_points(
+    collection_name="lumina_multimodal",
+    query=vector,
+    limit=request.limit
+)
+return [{"score": hit.score,
+         "file_path": hit.payload["file_path"]}
+        for hit in response.points]</code></pre>
+            </div>
+
+            <h2>Ingestion and hardware</h2>
+            <p>The ingestion script detects Apple Metal Performance Shaders and otherwise falls back to CPU. Each valid image is opened with Pillow, encoded, and converted into a Qdrant point with a UUID. Uploads are chunked into batches of ten to remain comfortably below payload limits and to make failures easier to isolate.</p>
+            <p>The deployed search API follows the same device-selection logic. The health endpoint exposes the active device and the known index size, which provides a lightweight operational check before the interface sends user traffic.</p>
+
+            <div class="article-callout">
+                <strong>Important implementation lesson</strong>
+                <p>Model inference was not the only scaling concern. Batch size, vector payloads, file availability, secrets management, and cloud/local execution modes all affected whether the system behaved like a product rather than a notebook.</p>
+            </div>
+
+            <h2>Failure modes and trade-offs</h2>
+            <p>Semantic retrieval can return visually plausible but contextually surprising results when a query is abstract or the image collection is narrow. Similarity scores are relative ranking signals, not calibrated probabilities. The current cloud interface also stores file paths as payloads; when the original image file is not present in the cloud container, it can display the match and score but not the bitmap itself.</p>
+            <p>A production iteration would store durable object URLs instead of local paths, add evaluation queries with relevance judgments, capture latency percentiles, and support incremental ingestion rather than scanning a whole directory. The current public Streamlit source also contains fallback connection credentials; those values should be rotated and removed so deployment fails closed unless secrets are supplied by the environment.</p>
+
+            <h2>Outcome and next steps</h2>
+            <p>Lumina proved the full retrieval loop: encode, store, search, serve, and display. More importantly, it made the boundary between model quality and system quality concrete. A strong embedding model still needs dependable ingestion, payload design, health checks, secret handling, and a user interface that explains its results.</p>
+
+            <div class="article-links">
+                <a href="https://lumina-search-engine.streamlit.app" target="_blank" rel="noreferrer">Open live application ↗</a>
+                <a href="https://github.com/levithion/Lumina" target="_blank" rel="noreferrer">Browse source code ↗</a>
+            </div>
             
             <a href="index.html#work" class="back-link">Return to portfolio <span>→</span></a>
         </article>
