@@ -177,22 +177,22 @@
                         <div class="arch-output"><small>OUTPUT + BIASES</small><strong>0.5–5.0</strong><span>predicted rating</span></div>
                     </div>
                     <div class="tensor-readout">
-                        <span>loss: binary_cross_entropy</span>
-                        <span>optimizer: Adam</span>
-                        <span>weights: best_model.pth</span>
+                        <span>ranker: hybrid score</span>
+                        <span>signals: NCF + TF-IDF</span>
+                        <span>weights: final_model.pth</span>
                     </div>
                 </div>
                 <div class="project-copy">
                     <div class="project-meta"><span>03</span><span>Deep recommendation</span><span>2025</span></div>
                     <h3>Neural Movie Recommender</h3>
-                    <p class="project-lede">A neural collaborative-filtering model that learns non-linear user–movie interactions from latent embeddings.</p>
-                    <p>The repository implementation concatenates 64-dimensional user and movie embeddings, passes them through a 128→64→32 MLP, adds learned user/movie/global biases, and serves ranked predictions through FastAPI.</p>
+                    <p class="project-lede">CineMatch turns a PyTorch NCF model into a personalized movie-discovery product.</p>
+                    <p>The service blends NCF signals with TF-IDF title and genre similarity plus popularity, while a FastAPI backend and Streamlit interface handle accounts, ratings, watchlists, IMDb search, and cold-start titles.</p>
                     <div class="metrics">
                         <div><strong>100K</strong><span>ratings</span></div>
                         <div><strong>9K</strong><span>movies</span></div>
                         <div><strong>600</strong><span>users</span></div>
                     </div>
-                    <div class="tags"><span>PyTorch</span><span>Neural CF</span><span>FastAPI</span><span>Plotly</span></div>
+                    <div class="tags"><span>PyTorch</span><span>Neural CF</span><span>TF-IDF</span><span>FastAPI</span><span>Streamlit</span><span>SQLite</span></div>
                     <div class="project-links">
                         <a href="article-ncf-recommender.html">Technical case study →</a>
                         <a href="https://ncf-based-movie-recommender-system.streamlit.app" target="_blank" rel="noreferrer">Live demo ↗</a>
