@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina Multimodal Search Engine | Shshank Singh</title>
+    <title>Lumina Private Memory Search | Shshank Singh</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,72 +19,100 @@
     <main class="article-shell">
         <div class="article-header">
             <p class="article-kicker">Project 02 / Multimodal retrieval</p>
-            <h1 class="article-title">Lumina Distributed Multimodal Semantic Search Engine</h1>
-            <p class="article-date">Feb 2026 — Mar 2026</p>
+            <h1 class="article-title">Lumina Local-First Multimodal Memory Search Engine</h1>
+            <p class="article-date">Jul 2026 — Aug 2026</p>
         </div>
         <article class="article-content">
             <div class="article-summary">
-                <p>Lumina is an end-to-end multimodal retrieval system that indexes 8,092 images and retrieves them from natural-language descriptions without manually authored tags.</p>
+                <p>Lumina indexes your screenshots and photos entirely on-device, captions each one with a local vision-language model, and makes the whole library searchable by meaning, on-screen text, and time. Nothing ever leaves the machine.</p>
                 <div class="article-facts">
-                    <div><strong>8,092</strong><span>Indexed images</span></div>
-                    <div><strong>512 dimensions</strong><span>CLIP embedding space</span></div>
-                    <div><strong>FastAPI + Qdrant</strong><span>Serving and retrieval</span></div>
+                    <div><strong>3 fused signals</strong><span>Visual · semantic · exact text</span></div>
+                    <div><strong>~10 seconds</strong><span>New screenshot to searchable</span></div>
+                    <div><strong>Zero cloud</strong><span>Local models, embedded Qdrant, localhost-only API</span></div>
                 </div>
             </div>
 
             <h2>Problem and objective</h2>
-            <p>Conventional image search usually depends on filenames, captions, or manually maintained tags. That works when a collection is small and carefully curated, but it breaks down when thousands of images arrive without consistent metadata. A query such as “a tall building at sunset” may describe the content perfectly while sharing no literal words with the stored filename.</p>
-            <p>The objective of Lumina was to make visual content searchable by meaning. The system needed to encode images once, accept open-ended text at query time, retrieve the nearest visual matches, and expose the result through both an API and a usable interface.</p>
+            <p>A few months of normal computer use produces thousands of files named “Screenshot 2026-08-12 at 10.34.17.png”. The information needed to find one again — which app it showed, what the error message said, roughly when it happened — exists only inside the pixels. Filename search cannot help, and shipping a personal screen history to a cloud vision API is not an acceptable trade for convenience.</p>
+            <p>The objective became: type what you remember — “the terminal error about permissions last week”, “that hotel listing with a brick wall” — and get the image back, under a hard constraint that every caption, embedding, and byte of data stays on the machine.</p>
+
+            <h2>From cloud demo to local-first product</h2>
+            <p>The first version of Lumina looked conventional: it encoded a fixed collection of 8,092 images with CLIP, stored vectors in hosted Qdrant, and served results through FastAPI and Streamlit. Operating that deployment surfaced recurring failures — payloads referencing files missing from the serving container, credentials committed to public source, scheduled sync jobs failing silently for days. Each incident demanded a redesign rather than a patch.</p>
+            <p>The current Lumina inverts the topology. Instead of moving images toward a cloud index, it moves the index to the images: an embedded Qdrant store, on-device models, and a localhost server wrapped in a native window. Privacy stopped being a promise in a README and became an architectural property.</p>
 
             <h2>System architecture</h2>
-            <p>I separated Lumina into ingestion, storage, retrieval, and presentation concerns. This prevents the expensive image-encoding stage from being coupled to every search request.</p>
+            <p>Embedded Qdrant allows exactly one process per data directory, and that constraint shaped everything else. Rather than fight it with locks and IPC, Lumina embraces it: <code>main.py</code> hosts the FastAPI server, both encoder models, the filesystem watcher, and the database in a single OS process. Launching a second instance fails fast with human guidance (<code>lsof qdrant_data/.lock</code>, or point <code>MEMORY_STORAGE_PATH</code> elsewhere) instead of corrupting the store.</p>
             <ul>
-                <li><strong>Ingestion pipeline:</strong> loads JPEG and PNG files, encodes each image with <code>clip-ViT-B-32</code>, attaches file-path and timestamp metadata, and upserts points into Qdrant in batches.</li>
-                <li><strong>Vector storage:</strong> Qdrant stores the 512-dimensional image vectors in the <code>lumina_multimodal</code> collection together with payload metadata.</li>
-                <li><strong>Query service:</strong> FastAPI validates a text query and result limit, encodes the text through the same CLIP model, and asks Qdrant for the closest points.</li>
-                <li><strong>Interface:</strong> Streamlit caches the model and database client, exposes a Top-K control, and renders results in a three-column grid with similarity scores.</li>
+                <li><strong>Ingestion:</strong> discovers JPEG, PNG, and HEIC files, extracts EXIF/mtime capture dates, runs SmolVLM captioning plus optional Tesseract OCR, computes dual embeddings, and upserts points in batches of 32.</li>
+                <li><strong>Storage:</strong> embedded Qdrant holds two named vector spaces per point — a 512-dimensional CLIP visual vector and a 384-dimensional MiniLM vector over <code>caption + OCR + tags</code> — alongside payload indexes for datetime, keyword, and full-text fields.</li>
+                <li><strong>Retrieval:</strong> hybrid search fuses visual similarity, semantic similarity, and exact token overlap, with safety and date-range filters pushed into Qdrant before top-K truncation.</li>
+                <li><strong>Interface:</strong> a pywebview native window over static UI assets, served by FastAPI bound to <code>127.0.0.1:8337</code>. Headless <code>--web</code> mode and a launchd plist run the same engine without a window.</li>
             </ul>
 
-            <figure class="article-figure">
-                <img src="assets/projects/lumina-architecture.png" alt="Lumina architecture showing the frontend, FastAPI backend, CLIP encoders, image ingestion pipeline, and Qdrant vector database">
-                <figcaption><span>FIG 01 / SYSTEM ARCHITECTURE</span><span>Query and ingestion paths are independently scalable</span></figcaption>
-            </figure>
+            <div class="article-diagram" role="img" aria-label="Lumina system flow from the local screenshots folder through VLM and OCR ingestion into an embedded Qdrant store, queried by a pywebview window over a localhost FastAPI server">
+                <div class="article-diagram-label"><span>FIG 01 / SINGLE-PROCESS ARCHITECTURE</span><span>Models, watcher, API, and database in one process</span></div>
+                <div class="diagram-flow">
+                    <div><small>SOURCE</small><strong>~/Screenshots</strong><span>screenshots · photos · HEIC</span></div>
+                    <div><small>INGESTION</small><strong>SmolVLM + OCR</strong><span>dedup · repair · sweep</span></div>
+                    <div><small>STORAGE</small><strong>Embedded Qdrant</strong><span>dual vectors · payload indexes</span></div>
+                    <div><small>INTERFACE</small><strong>pywebview window</strong><span>FastAPI on 127.0.0.1</span></div>
+                </div>
+            </div>
 
-            <h2>Why CLIP works here</h2>
-            <p>CLIP is trained so that related images and text occupy nearby regions of one embedding space. During ingestion, an image becomes a vector. During search, the user’s sentence becomes another vector of the same dimensionality. Qdrant can therefore rank images using vector similarity even though the query and stored object are different modalities.</p>
-            <p>This is the key design advantage: the system does not attempt to generate a caption for every image or perform keyword matching. It directly compares learned representations. New queries do not require re-indexing because the image vectors are stable.</p>
+            <h2>Why three signals beat one</h2>
+            <p>Raw CLIP similarity alone is weak for this domain: screenshots of the same app look nearly identical visually, so a query about a specific error returns every terminal window ever captured. Lumina therefore scores each result from three complementary signals. A MiniLM embedding of the caption-plus-OCR document carries meaning, an exact term-overlap score anchors literal matches (“permissions” must literally appear), and the CLIP visual vector still finds images no text describes well.</p>
+            <p>The default memory profile weights these at 10% visual, 50% semantic, 40% exact. Candidate generation pulls <code>max(limit × 4, 40)</code> hits from each vector space independently, merges them by point ID, then reranks the union — so a result that only one source discovered can still win after fusion.</p>
 
             <div class="code-sample">
-                <div class="code-sample-header"><span>app.py / search endpoint</span><span>FastAPI</span></div>
-                <pre><code>vector = model.encode(request.query).tolist()
-response = client.query_points(
-    collection_name="lumina_multimodal",
-    query=vector,
-    limit=request.limit
-)
-return [{"score": hit.score,
-         "file_path": hit.payload["file_path"]}
-        for hit in response.points]</code></pre>
+                <div class="code-sample-header"><span>retrieval.py / hybrid fusion</span><span>Dual-vector Qdrant queries</span></div>
+                <pre><code>common = {"collection_name": collection_name,
+          "limit": max(limit * 4, 40),
+          "query_filter": build_search_filter(
+              safe_only=safe, date_from=date_from, date_to=date_to)}
+sources = {
+    "visual":   client.query_points(query=visual_vector,
+                                    using="visual", **common).points,
+    "semantic": client.query_points(query=text_vector,
+                                    using="semantic_text", **common).points,
+}
+# merge hits by point ID, keep each channel's best score, then:
+score = (w_visual * best_visual
+         + w_semantic * best_semantic
+         + w_exact * _text_score(query, payload))</code></pre>
             </div>
 
-            <h2>Ingestion and hardware</h2>
-            <p>The ingestion script detects Apple Metal Performance Shaders and otherwise falls back to CPU. Each valid image is opened with Pillow, encoded, and converted into a Qdrant point with a UUID. Uploads are chunked into batches of ten to remain comfortably below payload limits and to make failures easier to isolate.</p>
-            <p>The deployed search API follows the same device-selection logic. The health endpoint exposes the active device and the known index size, which provides a lightweight operational check before the interface sends user traffic.</p>
+            <h2>Queries that understand time</h2>
+            <p>Memory requests are saturated with temporal language, so the server parses it before embedding anything. A stdlib-only parser recognizes phrases like “yesterday”, “last week”, “in March”, and “since June”, strips them from the query, and resolves them against the current clock into concrete UTC bounds. The remaining text becomes the embedding; the bounds become a <code>DatetimeRange</code> filter on the indexed <code>created_at</code> field.</p>
+            <p>Evaluating that filter inside Qdrant matters for correctness, not just speed: it constrains the candidate pool before top-K truncation, so a match from six months ago cannot be crowded out by forty fresher near-misses. Only one date phrase per query is interpreted — combining “last week in March” stays deliberately ambiguous instead of silently wrong.</p>
+
+            <h2>An ingestion pass that respects your time</h2>
+            <p>The first full-library scan is genuinely expensive because SmolVLM captions every new file. Everything after it is engineered to be nearly free. A stat-signature cache (size plus nanosecond mtime) identifies unchanged files without re-hashing or touching the database. Files that did change are hashed once with SHA-256; that digest becomes the point’s deterministic UUID, which makes identity content-addressed rather than path-based.</p>
+            <p>That choice pays off repeatedly. A file moved to a new folder is repaired in place with a payload update instead of being re-captioned. An edited screenshot indexes as its own new point while an hourly-throttled sweep deletes the superseded one. Failed files keep their failure status and retry automatically on the next scan, so transient errors never strand items permanently.</p>
+
+            <h2>Live indexing</h2>
+            <p>A watchdog observer over macOS FSEvents feeds a trailing-edge debouncer: saving one screenshot fires a burst of events, but the scan triggers exactly once, ten seconds after activity settles. Because <code>scan_library</code> is idempotent, timer-thread re-entry is safe, and a failed watch cycle logs a warning and waits for the next change rather than killing the thread. New screenshots become searchable roughly ten seconds after capture, with no manual action.</p>
+
+            <h2>Reverse image search and duplicate detection</h2>
+            <p>Any image can be posted to the API as a probe. Lumina embeds it with CLIP for neighbor search and hashes it with a perceptual hash for copy detection; Hamming distance zero marks an exact repost and distance up to eight marks a near-duplicate. Duplicate tiers are promoted above plain visual neighbors during ranking, so when you ask “where did I see this?”, the original outranks everything similar to it.</p>
 
             <div class="article-callout">
-                <strong>Important implementation lesson</strong>
-                <p>Model inference was not the only scaling concern. Batch size, vector payloads, file availability, secrets management, and cloud/local execution modes all affected whether the system behaved like a product rather than a notebook.</p>
+                <strong>Loud failure beats silent success</strong>
+                <p>Silent degradation was the recurring enemy across versions: captioning failures produced empty captions nobody noticed, sync jobs skipped uploads without error, and an unreachable database was indistinguishable from a missing collection. Every one of those paths now fails loudly — a disabled captioner prints why, storage conflicts exit with instructions, and health status exposes counts, watcher state, and last-scan failures.</p>
             </div>
 
-            <h2>Failure modes and trade-offs</h2>
-            <p>Semantic retrieval can return visually plausible but contextually surprising results when a query is abstract or the image collection is narrow. Similarity scores are relative ranking signals, not calibrated probabilities. The current cloud interface also stores file paths as payloads; when the original image file is not present in the cloud container, it can display the match and score but not the bitmap itself.</p>
-            <p>A production iteration would store durable object URLs instead of local paths, add evaluation queries with relevance judgments, capture latency percentiles, and support incremental ingestion rather than scanning a whole directory. The current public Streamlit source also contains fallback connection credentials; those values should be rotated and removed so deployment fails closed unless secrets are supplied by the environment.</p>
+            <h2>Privacy and security posture</h2>
+            <p>The privacy model is enforced by construction. Embeddings, captions, and OCR run locally; the server binds to loopback only; and uninstalling means deleting the project folder. File-serving endpoints verify that a requested absolute path actually exists in the index before touching the filesystem, returning 404 otherwise — nothing outside the library is reachable through the API. The SmolVLM safe-content verdict is stored as an <code>is_sensitive</code> payload field and enforced as a database-level <code>must_not</code> filter, which also keeps legacy points lacking that field visible rather than silently hidden.</p>
+
+            <h2>Testing and CI</h2>
+            <p>The app factory accepts injected encoder and client objects, so the test suite stubs the model layer entirely. CI installs only lightweight dependencies — no multi-gigabyte torch download — and covers ingestion cache behavior, dedup and move repair, sweep correctness, hybrid ranking math, date-phrase parsing, and every API endpoint including the indexed-path security checks.</p>
+
+            <h2>Trade-offs and limitations</h2>
+            <p>The design is macOS-first: Finder reveal via <code>open -R</code> and the launchd integration assume a Mac, though the retrieval engine itself is portable Python. First-run indexing is slow while SmolVLM captions the backlog; <code>CAPTION_ENABLED=0</code> trades caption recall for a fast OCR-and-visual-only pass. Tesseract remains optional, but its absence measurably hurts recall on text-heavy screenshots. Finally, the safe-content filter is a small-model heuristic — helpful, not a guarantee.</p>
 
             <h2>Outcome and next steps</h2>
-            <p>Lumina proved the full retrieval loop: encode, store, search, serve, and display. More importantly, it made the boundary between model quality and system quality concrete. A strong embedding model still needs dependable ingestion, payload design, health checks, secret handling, and a user interface that explains its results.</p>
+            <p>Lumina now closes the loop it originally proved — encode, store, search, serve — but on terms a personal archive actually requires: incremental freshness, honest failure modes, and privacy by architecture. Planned next steps include a relevance-judged evaluation set for tuning fusion weights, latency percentile tracking behind the status endpoint, quantized ONNX encoders for faster cold starts, and portable replacements for the macOS-specific reveal and autostart layers.</p>
 
             <div class="article-links">
-                <a href="https://lumina-search-engine.streamlit.app" target="_blank" rel="noreferrer">Open live application ↗</a>
                 <a href="https://github.com/levithion/Lumina" target="_blank" rel="noreferrer">Browse source code ↗</a>
             </div>
             
