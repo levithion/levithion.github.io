@@ -129,24 +129,47 @@
             </article>
 
             <article class="project-feature reveal">
-                <div class="project-visual project-visual-image">
-                    <div class="visual-toolbar"><span>system_architecture.png</span><span>1233 × 680</span></div>
-                    <img src="assets/projects/lumina-architecture.png" alt="Lumina system architecture showing Streamlit, FastAPI, CLIP encoders, Qdrant, and the ingestion pipeline">
+                <div class="project-visual architecture-board" aria-label="Lumina single-process architecture flowing from the screenshots folder through SmolVLM and OCR ingestion into an embedded Qdrant store, queried through a pywebview window over a localhost FastAPI server">
+                    <div class="visual-toolbar"><span>lumina / main.py</span><span>single-process · zero cloud</span></div>
+                    <div class="arch-columns">
+                        <div class="arch-inputs">
+                            <div class="arch-node"><small>SOURCE</small><strong>~/Screenshots</strong><span>png · jpg · heic</span></div>
+                        </div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-branches">
+                            <div class="arch-branch">
+                                <small>INGESTION</small>
+                                <strong>SmolVLM + OCR</strong>
+                                <span>caption · embed · watch</span>
+                            </div>
+                            <div class="arch-branch">
+                                <small>DUAL VECTORS</small>
+                                <strong>512D + 384D</strong>
+                                <span>CLIP visual · MiniLM text</span>
+                            </div>
+                        </div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-output"><small>RETRIEVAL</small><strong>Hybrid fusion</strong><span>visual · semantic · exact</span></div>
+                    </div>
+                    <div class="tensor-readout">
+                        <span>store: embedded Qdrant</span>
+                        <span>api: 127.0.0.1:8337</span>
+                        <span>window: pywebview</span>
+                    </div>
                 </div>
                 <div class="project-copy">
                     <div class="project-meta"><span>02</span><span>Multimodal retrieval</span><span>2026</span></div>
                     <h3>Lumina</h3>
-                    <p class="project-lede">Natural-language image search across 8,000+ assets using a shared CLIP embedding space.</p>
-                    <p>Designed a decoupled ingestion and search system with batch vector upserts, MPS-accelerated inference, FastAPI serving, Qdrant retrieval, and a Streamlit interface.</p>
+                    <p class="project-lede">Private memory search that makes thousands of screenshots findable by meaning, on-screen text, and time — entirely on-device.</p>
+                    <p>A single local process captions each capture with SmolVLM, embeds dual CLIP and MiniLM vectors into an embedded Qdrant store, and serves hybrid three-signal fusion with live watchdog indexing and date-aware filtering through a pywebview window.</p>
                     <div class="metrics">
-                        <div><strong>8K+</strong><span>images indexed</span></div>
-                        <div><strong>512D</strong><span>joint vectors</span></div>
-                        <div><strong>Top-K</strong><span>cosine search</span></div>
+                        <div><strong>3</strong><span>fused search signals</span></div>
+                        <div><strong>~10s</strong><span>screenshot to searchable</span></div>
+                        <div><strong>0</strong><span>bytes leave the machine</span></div>
                     </div>
-                    <div class="tags"><span>CLIP</span><span>Qdrant</span><span>FastAPI</span><span>Streamlit</span><span>Docker</span></div>
+                    <div class="tags"><span>SmolVLM</span><span>CLIP</span><span>MiniLM</span><span>Qdrant</span><span>FastAPI</span><span>pywebview</span></div>
                     <div class="project-links">
                         <a href="article-lumina.html">Technical case study →</a>
-                        <a href="https://lumina-search-engine.streamlit.app" target="_blank" rel="noreferrer">Live demo ↗</a>
                         <a href="https://github.com/levithion/Lumina" target="_blank" rel="noreferrer">Source ↗</a>
                     </div>
                 </div>
