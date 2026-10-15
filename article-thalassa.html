@@ -7,8 +7,8 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="academic.css">
     <link rel="stylesheet" href="article.css">
 </head>
 <body class="article-page">
@@ -35,11 +35,6 @@
             <h2>Problem and responsibility</h2>
             <p>Thalassa began as an exploration of stateful conversational interfaces. A useful wellness application needs more than a single prompt box: people need authentication, continuity, a private place to write, and a way to see patterns over time.</p>
             <p>The project is explicitly an AI demonstration, not therapy, diagnosis, or crisis care. That boundary matters because empathetic language can make a system appear more capable and authoritative than it is. The application therefore combines supportive prompt guidance with a resource library and a visible disclaimer.</p>
-
-            <figure class="article-figure">
-                <img src="assets/projects/thalassa-login.png" alt="Real screenshot of the deployed Thalassa login interface">
-                <figcaption><span>FIG 01 / LIVE APPLICATION</span><span>Authentication entry point captured from the deployed product</span></figcaption>
-            </figure>
 
             <h2>Application architecture</h2>
             <p>The backend is a Flask application with CORS, SQLAlchemy, Flask-JWT-Extended, and separate blueprints for users, moods, resources, and journals. The frontend consists of HTML/CSS and JavaScript views for login, registration, chat, journaling, mood tracking, and resources.</p>
@@ -106,6 +101,6 @@ messages.extend(
             <a href="index.html#projects" class="back-link">Return to portfolio <span>→</span></a>
         </article>
     </main>
-    <footer class="article-footer"><span>© 2026 Shshank Singh</span><span>Engineering portfolio / Project documentation</span></footer>
+    <footer class="article-footer"><span>© 2026 Shshank Singh</span><span>Project documentation</span></footer>
 </body>
 </html>
